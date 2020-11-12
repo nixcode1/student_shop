@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "623055229467",
+    "firebase_url": "https://stundent-shop.firebaseio.com",
+    "project_id": "stundent-shop",
+    "storage_bucket": "stundent-shop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623055229467:android:0283d508bce7ec79039ebe",
+        "android_client_info": {
+          "package_name": "com.example.student_shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623055229467-c7evltq0r9nbfhr4lovt11i0jontct4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSH3yMPwvZfXo8H5k0uek8R2vDiyr1kKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623055229467-c7evltq0r9nbfhr4lovt11i0jontct4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
