@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:student_shop/models/product.dart';
+import 'package:student_shop/ui/product_detail.dart';
+import 'package:student_shop/ui/test.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -228,6 +230,9 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => Sliver()))),
       body: home(context),
     );
   }
@@ -311,63 +316,76 @@ class NewItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.only(right: 10, bottom: 5),
-      width: size.width * 0.6,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300],
-              spreadRadius: 0.1,
-              blurRadius: 5,
-              offset: Offset(0, 5),
-            )
-          ]),
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: 5,
-            width: size.width * 0.6,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Hp new 32gb Ram, 256GB SDD, 1080p HD 15'6'",
-                    softWrap: false,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ProductDetail(
+                      product: product,
+                    )));
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 10, bottom: 5),
+        width: size.width * 0.6,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[300],
+                spreadRadius: 0.1,
+                blurRadius: 5,
+                offset: Offset(0, 5),
+              )
+            ]),
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 5,
+              width: size.width * 0.6,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.name,
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: size.height * 0.01),
-                  Text(
-                    "N${product.price}",
-                    style: TextStyle(
-                        color: Colors.grey, fontStyle: FontStyle.italic),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                height: size.height * 0.3,
-                width: size.width * 0.6,
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
+                    SizedBox(height: size.height * 0.01),
+                    Text(
+                      "N${product.price}",
+                      style: TextStyle(
+                          color: Colors.grey, fontStyle: FontStyle.italic),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+            Positioned(
+              top: 0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  height: size.height * 0.3,
+                  width: size.width * 0.6,
+                  child: Hero(
+                    tag: "${product.imageUrl}",
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
