@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:student_shop/models/product.dart';
 import 'package:student_shop/ui/product_detail.dart';
+import 'package:student_shop/ui/provider_test.dart';
 import 'package:student_shop/ui/test.dart';
 
 class Homepage extends StatefulWidget {
@@ -232,7 +233,7 @@ class _HomepageState extends State<Homepage> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => Sliver()))),
+              context, MaterialPageRoute(builder: (_) => MyHomePage()))),
       body: home(context),
     );
   }
