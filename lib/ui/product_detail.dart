@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:student_shop/models/order.dart';
 import 'package:student_shop/models/product.dart';
 
-class ProductDetail extends StatelessWidget {
+class ProductDetail extends StatefulWidget {
   final Product product;
 
-  const ProductDetail({Key key, this.product}) : super(key: key);
+  ProductDetail({Key key, this.product}) : super(key: key);
 
   static const textColor = Color(0xFF3a374e);
+
+  @override
+  _ProductDetailState createState() => _ProductDetailState();
+}
+
+class _ProductDetailState extends State<ProductDetail> {
+  Order order;
+
+  @override
+  void initState() {
+    order = Order(product: widget.product);
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +44,35 @@ class ProductDetail extends StatelessWidget {
               Navigator.pop(context);
             }),
         actions: [
-          IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Color(0xFF2d2942),
-              ),
-              onPressed: () {})
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            height: size.height * 0.008,
+            width: size.width * 0.1,
+            // decoration: BoxDecoration(
+            //   color: Color(0xFF2d2942),
+            //   shape: BoxShape.circle
+            // ),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                      icon: Icon(Icons.shopping_cart, color: Color(0xFF2d2942)),
+                      onPressed: () {}),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                        color: Colors.red, shape: BoxShape.circle),
+                    child: Text("${context.watch<CartController>().count}",
+                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
       body: Container(
@@ -49,7 +89,7 @@ class ProductDetail extends StatelessWidget {
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(10)),
                       child: Container(
-                        height: size.height * 0.4,
+                        height: size.height * 0.45,
                         width: size.width,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -58,9 +98,9 @@ class ProductDetail extends StatelessWidget {
                           ),
                         ),
                         child: Hero(
-                          tag: "${product.imageUrl}",
+                          tag: "${widget.product.imageUrl}",
                           child: Image.network(
-                            product.imageUrl,
+                            widget.product.imageUrl,
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -70,11 +110,12 @@ class ProductDetail extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(horizontal: size.height * 0.02),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          title(product),
-                          Divider(color: textColor),
+                          title(widget.product),
+                          Divider(color: ProductDetail.textColor),
                           SizedBox(height: size.height * 0.02),
-                          description(product, size.height),
+                          description(widget.product, size.height),
                           SizedBox(height: size.height * 0.19)
                         ],
                       ),
@@ -124,17 +165,21 @@ class ProductDetail extends StatelessWidget {
               product.name,
               softWrap: true,
               style: TextStyle(
-                  color: textColor, fontSize: 18, fontWeight: FontWeight.bold),
+                  color: ProductDetail.textColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Spacer(),
           Expanded(
             flex: 3,
             child: Text(
-              "#3400000",
+              "N${product.price}",
               textAlign: TextAlign.end,
               style: TextStyle(
-                  color: textColor, fontSize: 18, fontWeight: FontWeight.bold),
+                  color: ProductDetail.textColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
             ),
           )
         ],
@@ -150,7 +195,9 @@ class ProductDetail extends StatelessWidget {
           Text(
             "Description",
             style: TextStyle(
-                color: textColor, fontSize: 20, fontWeight: FontWeight.bold),
+                color: ProductDetail.textColor,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
           ),
           SizedBox(height: height * 0.01),
           Text(
@@ -179,17 +226,33 @@ class ProductDetail extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    color: Colors.white,
-                    child: Icon(Icons.remove, color: textColor),
-                  ),
-                  Text("2"),
-                  Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: textColor
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        order.decrement();
+                      });
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      child: Icon(Icons.remove, color: ProductDetail.textColor),
                     ),
-                    child: Icon(Icons.add, color: Colors.white,)
+                  ),
+                  Text("${order.quantity}"),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        order.increment();
+                        print("Tapped");
+                      });
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(2),
+                        decoration:
+                            BoxDecoration(color: ProductDetail.textColor),
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )),
                   )
                 ],
               ),
@@ -197,10 +260,10 @@ class ProductDetail extends StatelessWidget {
             Spacer(),
             Expanded(
               flex: 2,
-              child: Text("Total: #230000",
+              child: Text("N${order.totalPrice}",
                   textAlign: TextAlign.end,
                   style: TextStyle(
-                      color: textColor,
+                      color: ProductDetail.textColor,
                       fontSize: 17,
                       fontWeight: FontWeight.w600)),
             )
@@ -208,7 +271,10 @@ class ProductDetail extends StatelessWidget {
         ),
         FlatButton(
           padding: EdgeInsets.all(0),
-          onPressed: () {},
+          onPressed: () {
+            context.read<CartController>().addToCart(order);
+            print(context.read<CartController>().cart);
+          },
           child: Container(
             height: size.height * 0.075,
             width: size.width,
@@ -229,11 +295,14 @@ class ProductDetail extends StatelessWidget {
               ],
             ),
             child: Center(
-                child: Text("Add to Cart",
-                    style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900))),
+              child: Text(
+                "Add to Cart",
+                style: TextStyle(
+                    color: Colors.yellow,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
           ),
         )
       ],

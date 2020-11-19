@@ -298,7 +298,7 @@ class ItemCard extends StatelessWidget {
                 width: size.width * 0.5,
                 child: Image.network(
                   product.imageUrl,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -379,7 +379,7 @@ class NewItemCard extends StatelessWidget {
                     tag: "${product.imageUrl}",
                     child: Image.network(
                       product.imageUrl,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
