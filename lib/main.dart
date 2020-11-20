@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:student_shop/ui/cart_screen.dart';
 import 'package:student_shop/ui/homapage.dart';
 
 void main() async {
@@ -44,7 +45,13 @@ class MyApp extends StatelessWidget {
           // closer together (more dense) than on mobile platforms.
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: Homepage(),
+        initialRoute: '/',
+        routes: {
+          // When navigating to the "/" route, build the FirstScreen widget.
+          '/': (context) => Homepage(),
+          // When navigating to the "/second" route, build the SecondScreen widget.
+          '/cart': (context) => CartScreen(),
+        },
       ),
     );
   }

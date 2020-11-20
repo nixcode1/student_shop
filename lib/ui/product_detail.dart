@@ -4,6 +4,8 @@ import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:student_shop/models/order.dart';
 import 'package:student_shop/models/product.dart';
 
+import 'widgets/cart_widget.dart';
+
 class ProductDetail extends StatefulWidget {
   final Product product;
 
@@ -44,35 +46,7 @@ class _ProductDetailState extends State<ProductDetail> {
               Navigator.pop(context);
             }),
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            height: size.height * 0.008,
-            width: size.width * 0.1,
-            // decoration: BoxDecoration(
-            //   color: Color(0xFF2d2942),
-            //   shape: BoxShape.circle
-            // ),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: IconButton(
-                      icon: Icon(Icons.shopping_cart, color: Color(0xFF2d2942)),
-                      onPressed: () {}),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    padding: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                        color: Colors.red, shape: BoxShape.circle),
-                    child: Text("${context.watch<CartController>().count}",
-                        style: TextStyle(color: Colors.white, fontSize: 12)),
-                  ),
-                )
-              ],
-            ),
-          )
+          CartWidget()
         ],
       ),
       body: Container(
