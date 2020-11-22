@@ -45,9 +45,7 @@ class _ProductDetailState extends State<ProductDetail> {
             onPressed: () {
               Navigator.pop(context);
             }),
-        actions: [
-          CartWidget()
-        ],
+        actions: [CartWidget()],
       ),
       body: Container(
         height: size.height,
@@ -221,8 +219,9 @@ class _ProductDetailState extends State<ProductDetail> {
                     },
                     child: Container(
                         padding: EdgeInsets.all(2),
-                        decoration:
-                            BoxDecoration(color: ProductDetail.textColor),
+                        decoration: BoxDecoration(
+                            color: ProductDetail.textColor,
+                            borderRadius: BorderRadius.circular(5)),
                         child: Icon(
                           Icons.add,
                           color: Colors.white,

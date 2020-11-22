@@ -11,6 +11,7 @@ class CartScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        title: Text("Cart"),
         elevation: 0,
         leading: IconButton(
           color: Color(0xFF2d2942),
