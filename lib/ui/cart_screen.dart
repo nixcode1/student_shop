@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:provider/provider.dart';
+
+import 'widgets/cart_list_widget.dart';
 
 class CartScreen extends StatelessWidget {
   @override
@@ -17,6 +21,19 @@ class CartScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+      ),
+      body: CartBody(),
+    );
+  }
+}
+
+class CartBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: ListView(
+        children: context.watch<CartController>().cart.map((e) => CartListWidget(order: e,)).toList(),
       ),
     );
   }
