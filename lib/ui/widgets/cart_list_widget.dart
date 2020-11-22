@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:student_shop/models/order.dart';
-import 'package:provider/provider.dart';
 
 class CartListWidget extends StatelessWidget {
   final Order order;
@@ -15,7 +15,7 @@ class CartListWidget extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(20),
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 15, right: 20),
       width: size.width,
       height: size.height * 0.15,
       decoration: BoxDecoration(
@@ -24,14 +24,14 @@ class CartListWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
               color: Colors.grey[300],
-              blurRadius: 15,
-              spreadRadius: 0.5,
-              offset: Offset(10, 15))
+              blurRadius: 5,
+              spreadRadius: 0.1,
+              offset: Offset(10, 12))
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: size.height,
@@ -41,19 +41,27 @@ class CartListWidget extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           ),
-          Container(
-            width: size.width * 0.5,
-            child: Text(
-              order.product.name,
-              overflow: TextOverflow.fade,
-              softWrap: true,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: size.width * 0.5,
+                child: Text(
+                  order.product.name,
+                  overflow: TextOverflow.fade,
+                  softWrap: true,
+                ),
+              ),
+              Text("N${order.totalPrice}")
+            ],
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () => context.read<CartController>().addToCart(order),
+                onTap: () =>
+                    context.read<CartController>().incrementNotAdd(order),
                 child: Container(
                   padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(
@@ -72,8 +80,11 @@ class CartListWidget extends StatelessWidget {
                   ),
                 ),
               ),
+
+              //Remove Order Button
               GestureDetector(
-                onTap: () => context.read<CartController>().addToCart(order),
+                onTap: () =>
+                    context.read<CartController>().decrementOrder(order),
                 child: Container(
                   padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(

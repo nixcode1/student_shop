@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:student_shop/controllers/cart_controller.dart';
 
 import 'widgets/cart_list_widget.dart';
 
@@ -11,7 +11,11 @@ class CartScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text("Cart"),
+        title: Text(
+          "Cart",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        ),
+        centerTitle: true,
         elevation: 0,
         leading: IconButton(
           color: Color(0xFF2d2942),
@@ -31,11 +35,104 @@ class CartScreen extends StatelessWidget {
 class CartBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: ListView(
-        children: context.watch<CartController>().cart.map((e) => CartListWidget(order: e,)).toList(),
-      ),
+    Size size = MediaQuery.of(context).size;
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
+          child: ListView(
+            padding: EdgeInsets.only(bottom: size.height * 0.18),
+            children: context
+                .watch<CartController>()
+                .cart
+                .map((e) => CartListWidget(
+                      order: e,
+                    ))
+                .toList(),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          child: Container(
+            height: size.height * 0.18,
+            width: size.width,
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(30),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[300],
+                  spreadRadius: 0.1,
+                  blurRadius: 5,
+                  offset: Offset(0, -5),
+                ),
+              ],
+            ),
+            child: footer(size, context),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget footer(Size size, BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Flexible(
+              flex: 2,
+              child: Text("Items in Cart: ${context.watch<CartController>().count}",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
+            ),
+            Spacer(),
+            Expanded(
+              flex: 2,
+              child: Text("Total: N${context.watch<CartController>().totalPrice()}",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
+            )
+          ],
+        ),
+        FlatButton(
+          padding: EdgeInsets.all(0),
+          onPressed: () {},
+          child: Container(
+            height: size.height * 0.075,
+            width: size.width,
+            margin: EdgeInsets.all(0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                  colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[300],
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                "Checkout",
+                style: TextStyle(
+                    color: Colors.yellow,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
