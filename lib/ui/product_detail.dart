@@ -70,7 +70,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         ),
                         child: Hero(
-                          tag: "${widget.product.imageUrl}",
+                          tag: "${widget.product.id}",
                           child: Image.network(
                             widget.product.imageUrl,
                             fit: BoxFit.contain,

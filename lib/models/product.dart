@@ -19,7 +19,7 @@ class Product {
     this.category,
     this.imageUrl,
   });
-  int id;
+  String id;
   int price;
   String name;
   String description;
@@ -27,7 +27,7 @@ class Product {
   String imageUrl;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        id: json["id"],
+        id: json["id"].toString(),
         price: json["price"],
         name: json["name"],
         description: json["description"],

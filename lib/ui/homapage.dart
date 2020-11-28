@@ -155,8 +155,7 @@ class _HomepageState extends State<Homepage> {
                     child: Column(
                       children: [
                         categoryRow("New Arrivals"),
-                        Container(
-                            margin: EdgeInsets.only(bottom: 5),
+                        SizedBox(
                             height: size.height * 0.4,
                             child: newProductsList(context, products)),
                         SizedBox(
@@ -248,7 +247,7 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(right: 10, bottom: 5),
+      margin: EdgeInsets.only(right: 10,),
       width: size.width * 0.6,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -337,7 +336,7 @@ class NewItemCard extends StatelessWidget {
                 color: Colors.grey[300],
                 spreadRadius: 0.1,
                 blurRadius: 5,
-                offset: Offset(0, 5),
+                offset: Offset(5, 10),
               )
             ]),
         child: Stack(
@@ -376,7 +375,7 @@ class NewItemCard extends StatelessWidget {
                   height: size.height * 0.3,
                   width: size.width * 0.6,
                   child: Hero(
-                    tag: "${product.imageUrl}",
+                    tag: "${product.id}",
                     child: Image.network(
                       product.imageUrl,
                       fit: BoxFit.contain,
