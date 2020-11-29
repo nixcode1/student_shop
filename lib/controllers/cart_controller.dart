@@ -1,49 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:student_shop/models/cart_item.dart';
 import 'package:student_shop/models/order.dart';
 
 class CartController extends ChangeNotifier {
   int _count;
+  Order order = new Order()
+  ..items = [];
 
-  List<Order> _orders = [];
+  int get count => order.items.length;
 
-  int get count => _orders.length;
-
-  List get cart => _orders;
+  List get cart => order.items;
 
   int totalPrice() {
-    int _totalPrice = 0;
-    _orders.forEach((element) {
-      _totalPrice += _totalPrice + element.totalPrice;
+    order.totalPrice = 0;
+    order.items.forEach((element) {
+      order.totalPrice += order.totalPrice + element.totalPrice;
     });
-    return _totalPrice;
+    return order.totalPrice;
   }
 
-  void addToCart(Order order) {
-    Order newOrder = _orders.firstWhere(
-        (element) => element.product.id == order.product.id,
+  void addToCart(CartItem cartItem) {
+    CartItem newCartItem = order.items.firstWhere(
+        (element) => element.product.id == cartItem.product.id,
         orElse: () => null);
-    if (newOrder != null) {
-      incrementNotAdd(order);
+    if (newCartItem != null) {
+      incrementNotAdd(cartItem);
     } else {
-      _orders.add(order);
+      order.items.add(cartItem);
     }
 
     notifyListeners();
   }
 
-  void incrementNotAdd(Order order) {
+  void incrementNotAdd(CartItem cartItem) {
     int index =
-        _orders.indexWhere((element) => element.product.id == order.product.id);
-    _orders[index].increment();
-    print(_orders[index].totalPrice);
+        order.items.indexWhere((element) => element.product.id == cartItem.product.id);
+    order.items[index].increment();
+    print(order.items[index].totalPrice);
     notifyListeners();
   }
 
-  void decrementOrder(Order order) {
+  void decrementCartItem(CartItem cartItem) {
     int index =
-        _orders.indexWhere((element) => element.product.id == order.product.id);
-    _orders[index].decrement();
-    print(_orders[index].totalPrice);
+        order.items.indexWhere((element) => element.product.id == cartItem.product.id);
+    order.items[index].decrement();
+    print(order.items[index].totalPrice);
 
     notifyListeners();
   }

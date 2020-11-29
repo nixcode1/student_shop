@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
-import 'package:student_shop/models/order.dart';
+import 'package:student_shop/models/cart_item.dart';
 
 class CartListWidget extends StatelessWidget {
-  final Order order;
+  final CartItem order;
 
   const CartListWidget({Key key, this.order}) : super(key: key);
 
@@ -23,10 +23,11 @@ class CartListWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-              color: Colors.grey[300],
-              blurRadius: 5,
-              spreadRadius: 0.1,
-              offset: Offset(10, 12))
+            color: Colors.grey[300],
+            blurRadius: 5,
+            spreadRadius: 0.1,
+            offset: Offset(10, 12),
+          ),
         ],
       ),
       child: Row(
@@ -43,7 +44,7 @@ class CartListWidget extends StatelessWidget {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
                 width: size.width * 0.5,
@@ -84,7 +85,7 @@ class CartListWidget extends StatelessWidget {
               //Remove Order Button
               GestureDetector(
                 onTap: () =>
-                    context.read<CartController>().decrementOrder(order),
+                    context.read<CartController>().decrementCartItem(order),
                 child: Container(
                   padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(

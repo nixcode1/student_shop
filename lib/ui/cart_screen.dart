@@ -101,7 +101,7 @@ class CartBody extends StatelessWidget {
         ),
         FlatButton(
           padding: EdgeInsets.all(0),
-          onPressed: () {},
+          onPressed: () => print(context.read<CartController>().order.toJson()),
           child: Container(
             height: size.height * 0.075,
             width: size.width,

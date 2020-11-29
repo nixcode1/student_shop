@@ -1,8 +1,11 @@
 // To parse this JSON data, do
 //
 //     final product = productFromJson(jsonString);
-
+import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
+
+part 'product.g.dart';
+
 
 List<Product> productFromJson(String str) =>
     List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
@@ -10,6 +13,7 @@ List<Product> productFromJson(String str) =>
 String productToJson(List<Product> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+@JsonSerializable()
 class Product {
   Product({
     this.id,
@@ -26,21 +30,10 @@ class Product {
   String category;
   String imageUrl;
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-        id: json["id"].toString(),
-        price: json["price"],
-        name: json["name"],
-        description: json["description"],
-        category: json["category"],
-        imageUrl: json["imageUrl"],
-      );
+  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "price": price,
-        "name": name,
-        "description": description,
-        "category": category,
-        "imageUrl": imageUrl,
-      };
+  /// `toJson` is the convention for a class to declare support for serialization
+  /// to JSON. The implementation simply calls the private, generated
+  /// helper method `_$UserToJson`.
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:student_shop/models/order.dart';
 import 'package:student_shop/models/product.dart';
 import 'package:student_shop/ui/product_detail.dart';
 import 'package:student_shop/ui/provider_test.dart';
@@ -231,8 +232,8 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => MyHomePage()))),
+          onPressed: () {
+          }),
       body: home(context),
     );
   }
@@ -355,13 +356,14 @@ class NewItemCard extends StatelessWidget {
                       overflow: TextOverflow.fade,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
+                        fontSize: 16
                       ),
                     ),
                     SizedBox(height: size.height * 0.01),
                     Text(
                       "N${product.price}",
                       style: TextStyle(
-                          color: Colors.grey, fontStyle: FontStyle.italic),
+                          color: Colors.grey, fontStyle: FontStyle.italic, fontSize: 15),
                     ),
                   ],
                 ),

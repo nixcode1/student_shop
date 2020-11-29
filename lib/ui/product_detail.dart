@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
-import 'package:student_shop/models/order.dart';
+import 'package:student_shop/models/cart_item.dart';
 import 'package:student_shop/models/product.dart';
 
 import 'widgets/cart_widget.dart';
@@ -18,11 +18,11 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  Order order;
+  CartItem order;
 
   @override
   void initState() {
-    order = Order(product: widget.product);
+    order = CartItem(product: widget.product);
     // TODO: implement initState
     super.initState();
   }
