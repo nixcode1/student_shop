@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:student_shop/db/db.dart';
+import 'package:student_shop/models/order.dart';
 
 import 'widgets/cart_list_widget.dart';
 
 class CartScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +36,7 @@ class CartScreen extends StatelessWidget {
 }
 
 class CartBody extends StatelessWidget {
+  FirestoreDB dbApi = FirestoreDB();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -79,6 +83,7 @@ class CartBody extends StatelessWidget {
   }
 
   Widget footer(Size size, BuildContext context) {
+    
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -101,7 +106,11 @@ class CartBody extends StatelessWidget {
         ),
         FlatButton(
           padding: EdgeInsets.all(0),
-          onPressed: () => print(context.read<CartController>().order.toJson()),
+          onPressed: () async {
+            Order order = context.read<CartController>().order;
+            await dbApi.addOrder(order);
+            print(order.toJson());
+          },
           child: Container(
             height: size.height * 0.075,
             width: size.width,

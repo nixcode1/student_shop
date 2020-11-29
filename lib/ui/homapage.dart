@@ -1,12 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:student_shop/controllers/cart_controller.dart';
-import 'package:student_shop/models/order.dart';
 import 'package:student_shop/models/product.dart';
 import 'package:student_shop/ui/product_detail.dart';
-import 'package:student_shop/ui/provider_test.dart';
-import 'package:student_shop/ui/test.dart';
-import 'package:provider/provider.dart';
 import 'package:student_shop/ui/widgets/cart_widget.dart';
 
 class Homepage extends StatefulWidget {
