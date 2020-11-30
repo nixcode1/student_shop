@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_shop/db/db.dart';
+import 'package:student_shop/models/user_model.dart';
 
 class Auth {
   final _authInstance = FirebaseAuth.instance;
@@ -8,10 +9,13 @@ class Auth {
   FirebaseAuth get instance => _authInstance;
 
   Future<String> registerWithEmail(String email, String password) async {
+    AppUser user = AppUser();
     try {
       UserCredential userCredential = await _authInstance
           .createUserWithEmailAndPassword(email: email, password: password);
-      await _db.createUser(userCredential.user, email);
+          user.id = userCredential.user.uid;
+          user.email = email;
+      await _db.createUser(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return ('The password provided is too weak.');

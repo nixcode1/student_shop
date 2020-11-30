@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_shop/models/order.dart';
+import 'package:student_shop/models/user_model.dart';
 
 // * This is my database class for firestore
 class FirestoreDB {
@@ -22,7 +23,19 @@ class FirestoreDB {
     return results;
   }
 
-  void createUser(User user, String email) {
-    _users.doc(user.uid).set({'email': email});
+  void createUser(AppUser user) {
+    _users.doc(user.id).set(user.toJson());
+  }
+
+  Future<AppUser> getUser(String id) async{
+    DocumentSnapshot result = await  _users.doc(id).get();
+    AppUser user = AppUser.fromJson(result.data());
+    print("User fectched!: ${user.email}");
+    return user;
+  }
+
+  void updateUser(String id, AppUser user) {
+    _users.doc(id).update(user.toJson());
+    print("${user.email}: User updated");
   }
 }

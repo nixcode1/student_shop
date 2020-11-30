@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_shop/auth/auth_api.dart';
+import 'package:student_shop/db/db.dart';
+import 'package:student_shop/models/user_model.dart';
 import 'package:student_shop/ui/auth/login_screen.dart';
 import 'package:student_shop/ui/screens/home_screen.dart';
 import 'package:student_shop/ui/widgets/cart_widget.dart';
@@ -99,8 +101,14 @@ class _MyHomepageState extends State<MyHomepage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Auth().instance.signOut();
+        onPressed: () async{
+          // Auth().instance.signOut();
+          String userID = Auth().instance.currentUser.uid;
+          AppUser user = await FirestoreDB().getUser(userID)
+          ..address = 'test'
+          ..phoneNo = '09345389456'
+          ..name = "Admin";
+          FirestoreDB().updateUser(userID, user);
         },
       ),
       body: _body,
