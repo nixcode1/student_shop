@@ -4,10 +4,9 @@ import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/order.dart';
 
-import 'widgets/cart_list_widget.dart';
+import '../widgets/cart_list_widget.dart';
 
 class CartScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +82,6 @@ class CartBody extends StatelessWidget {
   }
 
   Widget footer(Size size, BuildContext context) {
-    
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -91,14 +89,16 @@ class CartBody extends StatelessWidget {
           children: [
             Flexible(
               flex: 2,
-              child: Text("Items in Cart: ${context.watch<CartController>().count}",
+              child: Text(
+                  "Items in Cart: ${context.watch<CartController>().count}",
                   textAlign: TextAlign.end,
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
             ),
             Spacer(),
             Expanded(
               flex: 2,
-              child: Text("Total: N${context.watch<CartController>().totalPrice()}",
+              child: Text(
+                  "Total: N${context.watch<CartController>().totalPrice()}",
                   textAlign: TextAlign.end,
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
             )
@@ -107,9 +107,16 @@ class CartBody extends StatelessWidget {
         FlatButton(
           padding: EdgeInsets.all(0),
           onPressed: () async {
-            Order order = context.read<CartController>().order;
-            await dbApi.addOrder(order);
-            print(order.toJson());
+            // Order order = context.read<CartController>().order;
+            // await dbApi.addOrder(order);
+            // print(order.toJson());
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.green,
+                content: Text('Processing Data', style: TextStyle(color: Colors.white),),
+                action: SnackBarAction(label: "Close", onPressed: () {}, textColor: Colors.red,),
+              ),
+            );
           },
           child: Container(
             height: size.height * 0.075,

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
-import 'package:student_shop/ui/cart_screen.dart';
-import 'package:student_shop/ui/homapage.dart';
+import 'package:student_shop/ui/screens/cart_screen.dart';
+import 'package:student_shop/ui/screens/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

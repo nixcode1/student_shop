@@ -4,7 +4,7 @@ import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:student_shop/models/cart_item.dart';
 import 'package:student_shop/models/product.dart';
 
-import 'widgets/cart_widget.dart';
+import '../widgets/cart_widget.dart';
 
 class ProductDetail extends StatefulWidget {
   final Product product;
