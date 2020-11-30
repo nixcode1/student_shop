@@ -5,13 +5,17 @@ part 'cart_item.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class CartItem {
+
+  @JsonKey(ignore: true)
   Product product;
+  String name;
   int price;
   int quantity;
   int total = 0;
 
   CartItem({this.product, this.quantity = 1}) {
     price = product.price;
+    name = product.name;
     print(price);
   }
 

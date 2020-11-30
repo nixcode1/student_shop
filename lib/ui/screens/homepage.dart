@@ -52,8 +52,6 @@ class _MyHomepageState extends State<MyHomepage> {
 
   @override
   Widget build(BuildContext context) {
-    double kHeight = MediaQuery.of(context).size.height;
-    double kWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
@@ -102,13 +100,14 @@ class _MyHomepageState extends State<MyHomepage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
-          // Auth().instance.signOut();
-          String userID = Auth().instance.currentUser.uid;
-          AppUser user = await FirestoreDB().getUser(userID)
-          ..address = 'test'
-          ..phoneNo = '09345389456'
-          ..name = "Admin";
-          FirestoreDB().updateUser(userID, user);
+          Auth().instance.signOut();
+          // String userID = Auth().instance.currentUser.uid;
+          // AppUser user = await FirestoreDB().getUser(userID)
+          // ..address = 'test'
+          // ..phoneNo = '09345389456'
+          // ..name = "Admin";
+          // FirestoreDB().updateUser(userID, user);
+
         },
       ),
       body: _body,

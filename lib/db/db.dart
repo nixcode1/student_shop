@@ -14,8 +14,8 @@ class FirestoreDB {
     // Call the user's CollectionReference to add a new user
     _orders
         .add(order.toJson())
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+        .then((value) => print("\Order added"))
+        .catchError((error) => print("Failed to add order: $error"));
   }
 
   Future<QuerySnapshot> getAllProducts() async {

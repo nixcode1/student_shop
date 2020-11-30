@@ -39,7 +39,8 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
                 decoration: InputDecoration(labelText: "Password"),
               ),
               registerButton(),
-              loginButton()
+              loginButton(),
+              googleButton(),
             ],
           ),
         ),
@@ -72,6 +73,16 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
       child: Text("Login"),
     );
   }
+
+  Widget googleButton() {
+    return RaisedButton(
+      onPressed: () async {
+        auth.signInWithGoogle();
+      },
+      child: Text("Google"),
+    );
+  }
+
 
   Future<void> _showMyDialog() async {
     return showDialog<void>(

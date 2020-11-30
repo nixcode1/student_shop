@@ -13,10 +13,16 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
             e == null ? null : CartItem.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     totalPrice: json['totalPrice'] as int,
-  );
+  )
+    ..user = json['user'] as String
+    ..address = json['address'] as String
+    ..status = json['status'] as String;
 }
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'items': instance.items?.map((e) => e?.toJson())?.toList(),
       'totalPrice': instance.totalPrice,
+      'user': instance.user,
+      'address': instance.address,
+      'status': instance.status,
     };

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/order.dart';
+import 'package:student_shop/models/user_model.dart';
 
 import '../widgets/cart_list_widget.dart';
 
@@ -107,16 +109,13 @@ class CartBody extends StatelessWidget {
         FlatButton(
           padding: EdgeInsets.all(0),
           onPressed: () async {
-            // Order order = context.read<CartController>().order;
-            // await dbApi.addOrder(order);
-            // print(order.toJson());
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.green,
-                content: Text('Processing Data', style: TextStyle(color: Colors.white),),
-                action: SnackBarAction(label: "Close", onPressed: () {}, textColor: Colors.red,),
-              ),
-            );
+            String id = Auth().instance.currentUser.uid;
+            AppUser user  = await FirestoreDB().getUser(id);
+            Order order = context.read<CartController>().order
+            ..address = user.address
+            ..user = id;
+            await dbApi.addOrder(order);
+            print(order.toJson());
           },
           child: Container(
             height: size.height * 0.075,
