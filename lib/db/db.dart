@@ -23,8 +23,11 @@ class FirestoreDB {
     return results;
   }
 
-  void createUser(AppUser user) {
-    _users.doc(user.id).set(user.toJson());
+  void createUser(User user) {
+    AppUser dbUser = AppUser()
+    ..id = user.uid
+    ..email = user.email;
+    _users.doc(user.uid).set(dbUser.toJson());
   }
 
   Future<AppUser> getUser(String id) async{

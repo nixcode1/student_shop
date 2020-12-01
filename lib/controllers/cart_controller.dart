@@ -32,6 +32,12 @@ class CartController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool removeFromCart(CartItem cartItem) {
+    bool result = order.items.remove(cartItem);
+    notifyListeners();
+    return result;
+  }
+
   void incrementNotAdd(CartItem cartItem) {
     int index =
         order.items.indexWhere((element) => element.product.id == cartItem.product.id);

@@ -30,7 +30,10 @@ class CartWidget extends StatelessWidget {
               decoration:
                   BoxDecoration(color: Colors.red, shape: BoxShape.circle),
               child: Text("${context.watch<CartController>().count}",
-                  style: TextStyle(color: Colors.white, fontSize: 12)),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold)),
             ),
           )
         ],

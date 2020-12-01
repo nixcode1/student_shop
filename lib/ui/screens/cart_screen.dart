@@ -43,7 +43,7 @@ class CartBody extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        Container(
+        context.watch<CartController>().count < 1? Center(child: Text("Cart is empty")) : Container(
           padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
           child: ListView(
             padding: EdgeInsets.only(bottom: size.height * 0.18),
@@ -51,7 +51,7 @@ class CartBody extends StatelessWidget {
                 .watch<CartController>()
                 .cart
                 .map((e) => CartListWidget(
-                      order: e,
+                      item: e,
                     ))
                 .toList(),
           ),
@@ -110,7 +110,9 @@ class CartBody extends StatelessWidget {
           padding: EdgeInsets.all(0),
           onPressed: () async {
             String id = Auth().instance.currentUser.uid;
+            print("user id + $id");
             AppUser user  = await FirestoreDB().getUser(id);
+            print(user.email);
             Order order = context.read<CartController>().order
             ..address = user.address
             ..user = id;
