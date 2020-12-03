@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
+import 'package:student_shop/controllers/user_controller.dart';
 
 class LoginOrRegister extends StatefulWidget {
   @override
@@ -56,6 +58,9 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
             _emailController.text, _passwordController.text);
             Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(mySnackBar(message));
+        if(message == "Signed In") {
+          await Provider.of<UserController>(context, listen: false).initUser();
+        }
       },
       child: Text("Register"),
     );
@@ -69,6 +74,9 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
             _emailController.text, _passwordController.text);
             Navigator.pop(context);
         _scaffoldKey.currentState.showSnackBar(mySnackBar(message));
+        if(message == "Signed In") {
+          await Provider.of<UserController>(context, listen: false).initUser();
+        }
       },
       child: Text("Login"),
     );
@@ -77,7 +85,10 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
   Widget googleButton() {
     return RaisedButton(
       onPressed: () async {
-        auth.signInWithGoogle();
+        String message = await auth.signInWithGoogle();
+        if(message == "Signed In") {
+          await Provider.of<UserController>(context, listen: false).initUser();
+        }
       },
       child: Text("Google"),
     );

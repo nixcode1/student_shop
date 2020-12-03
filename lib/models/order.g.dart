@@ -16,6 +16,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
   )
     ..user = json['user'] as String
     ..address = json['address'] as String
+    ..phoneNo = json['phoneNo'] as String
     ..status = json['status'] as String;
 }
 
@@ -24,5 +25,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'totalPrice': instance.totalPrice,
       'user': instance.user,
       'address': instance.address,
+      'phoneNo': instance.phoneNo,
       'status': instance.status,
     };

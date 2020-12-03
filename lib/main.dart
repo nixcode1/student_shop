@@ -4,7 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:student_shop/ui/screens/cart_screen.dart';
+import 'package:student_shop/ui/screens/checkout.dart';
 import 'package:student_shop/ui/screens/homepage.dart';
+
+import 'controllers/user_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CartController()),
+        ChangeNotifierProvider(create: (_) => UserController(), lazy: false,)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -37,6 +41,7 @@ class MyApp extends StatelessWidget {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primaryColor: Color(0xFFf9f9f9),
+          accentColor: Color(0xFF2D2943),
           primaryIconTheme: IconThemeData(color: Colors.black),
           primaryTextTheme: TextTheme(caption: TextStyle(color: Colors.grey)),
           fontFamily: "Montserrat",
@@ -51,6 +56,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => Homepage(),
           // When navigating to the "/second" route, build the SecondScreen widget.
           '/cart': (context) => CartScreen(),
+          '/checkout': (context) => CheckoutScreen(),
         },
       ),
     );

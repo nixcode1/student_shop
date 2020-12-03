@@ -4,8 +4,7 @@ import 'package:student_shop/models/order.dart';
 
 class CartController extends ChangeNotifier {
   int _count;
-  Order order = new Order()
-  ..items = [];
+  Order order = new Order()..items = [];
 
   int get count => order.items.length;
 
@@ -19,17 +18,18 @@ class CartController extends ChangeNotifier {
     return order.totalPrice;
   }
 
-  void addToCart(CartItem cartItem) {
+  String addToCart(CartItem cartItem) {
     CartItem newCartItem = order.items.firstWhere(
         (element) => element.product.id == cartItem.product.id,
         orElse: () => null);
     if (newCartItem != null) {
-      incrementNotAdd(cartItem);
+      String message = incrementNotAdd(cartItem);
+      return message;
     } else {
       order.items.add(cartItem);
+      notifyListeners();
+      return "Item Added!";
     }
-
-    notifyListeners();
   }
 
   bool removeFromCart(CartItem cartItem) {
@@ -38,20 +38,34 @@ class CartController extends ChangeNotifier {
     return result;
   }
 
-  void incrementNotAdd(CartItem cartItem) {
-    int index =
-        order.items.indexWhere((element) => element.product.id == cartItem.product.id);
-    order.items[index].increment();
-    print(order.items[index].totalPrice);
+  String incrementNotAdd(CartItem cartItem) {
+    int index = order.items
+        .indexWhere((element) => element.product.id == cartItem.product.id);
+    CartItem item = order.items[index];
+    item.increment();
+    print(item.totalPrice);
     notifyListeners();
+    return "Item already in cart, quantity increased to ${item.quantity}";
   }
 
   void decrementCartItem(CartItem cartItem) {
-    int index =
-        order.items.indexWhere((element) => element.product.id == cartItem.product.id);
+    int index = order.items
+        .indexWhere((element) => element.product.id == cartItem.product.id);
     order.items[index].decrement();
     print(order.items[index].totalPrice);
-
     notifyListeners();
   }
+
+  set cartAddress(String address ){
+    order.address = address;
+    print("Controller cart address added");
+    notifyListeners();
+  }
+
+  set phoneNo(String number) {
+    order.phoneNo = number;
+    notifyListeners();
+  }
+
+  
 }

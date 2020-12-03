@@ -45,82 +45,96 @@ class _ProductDetailState extends State<ProductDetail> {
             onPressed: () {
               Navigator.pop(context);
             }),
-        actions: [CartWidget()],
+        actions: [
+          CartWidget(),
+        ],
       ),
-      body: Container(
-        height: size.height,
-        width: size.width,
-        child: Stack(
-          children: [
-            Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(10)),
-                      child: Container(
-                        height: size.height * 0.45,
-                        width: size.width,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(20),
+      body: Builder(
+        builder: (context) => Container(
+          height: size.height,
+          width: size.width,
+          child: Stack(
+            children: [
+              Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
+                        child: Container(
+                          height: size.height * 0.45,
+                          width: size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(20),
+                            ),
                           ),
-                        ),
-                        child: Hero(
-                          tag: "${widget.product.id}",
-                          child: Image.network(
-                            widget.product.imageUrl,
-                            fit: BoxFit.contain,
+                          child: Hero(
+                            tag: "${widget.product.id}",
+                            child: Image.network(
+                              widget.product.imageUrl,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.height * 0.02),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          title(widget.product),
-                          Divider(color: ProductDetail.textColor),
-                          SizedBox(height: size.height * 0.02),
-                          description(widget.product, size.height),
-                          SizedBox(height: size.height * 0.19)
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                height: size.height * 0.18,
-                width: size.width,
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(30),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.height * 0.02),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            title(widget.product),
+                            Divider(color: ProductDetail.textColor),
+                            SizedBox(height: size.height * 0.02),
+                            description(widget.product, size.height),
+                            SizedBox(height: size.height * 0.19)
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[300],
-                      spreadRadius: 0.1,
-                      blurRadius: 5,
-                      offset: Offset(0, -5),
-                    ),
-                  ],
                 ),
-                child: footer(size),
               ),
-            ),
-          ],
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  height: size.height * 0.18,
+                  width: size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey[300],
+                        spreadRadius: 0.1,
+                        blurRadius: 5,
+                        offset: Offset(0, -5),
+                      ),
+                    ],
+                  ),
+                  child: footer(size, context),
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget mySnackBar(String message) {
+    return SnackBar(
+      backgroundColor: Colors.green,
+      content: Text(
+        message,
+        style: TextStyle(color: Colors.white),
       ),
     );
   }
@@ -187,7 +201,7 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  Widget footer(Size size) {
+  Widget footer(Size size, BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -245,8 +259,8 @@ class _ProductDetailState extends State<ProductDetail> {
         FlatButton(
           padding: EdgeInsets.all(0),
           onPressed: () {
-            context.read<CartController>().addToCart(order);
-            print(context.read<CartController>().cart);
+            String message = context.read<CartController>().addToCart(order);
+            Scaffold.of(context).showSnackBar(mySnackBar(message));
           },
           child: Container(
             height: size.height * 0.075,

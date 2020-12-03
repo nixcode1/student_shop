@@ -30,7 +30,8 @@ class FirestoreDB {
     _users.doc(user.uid).set(dbUser.toJson());
   }
 
-  Future<AppUser> getUser(String id) async{
+  Future<AppUser> getUser() async{
+    String id = FirebaseAuth.instance.currentUser.uid;
     DocumentSnapshot result = await  _users.doc(id).get();
     AppUser user = AppUser.fromJson(result.data());
     print("User fectched!: ${user.email}");

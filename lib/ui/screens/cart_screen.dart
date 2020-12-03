@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:student_shop/controllers/user_controller.dart';
 import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/order.dart';
 import 'package:student_shop/models/user_model.dart';
@@ -17,7 +18,7 @@ class CartScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Text(
           "Cart",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
         ),
         centerTitle: true,
         elevation: 0,
@@ -43,19 +44,21 @@ class CartBody extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        context.watch<CartController>().count < 1? Center(child: Text("Cart is empty")) : Container(
-          padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
-          child: ListView(
-            padding: EdgeInsets.only(bottom: size.height * 0.18),
-            children: context
-                .watch<CartController>()
-                .cart
-                .map((e) => CartListWidget(
-                      item: e,
-                    ))
-                .toList(),
-          ),
-        ),
+        context.watch<CartController>().count < 1
+            ? Center(child: Text("Cart is empty"))
+            : Container(
+                padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
+                child: ListView(
+                  padding: EdgeInsets.only(bottom: size.height * 0.18),
+                  children: context
+                      .watch<CartController>()
+                      .cart
+                      .map((e) => CartListWidget(
+                            item: e,
+                          ))
+                      .toList(),
+                ),
+              ),
         Positioned(
           bottom: 0,
           child: Container(
@@ -109,15 +112,8 @@ class CartBody extends StatelessWidget {
         FlatButton(
           padding: EdgeInsets.all(0),
           onPressed: () async {
-            String id = Auth().instance.currentUser.uid;
-            print("user id + $id");
-            AppUser user  = await FirestoreDB().getUser(id);
-            print(user.email);
-            Order order = context.read<CartController>().order
-            ..address = user.address
-            ..user = id;
-            await dbApi.addOrder(order);
-            print(order.toJson());
+            context.read<CartController>().cartAddress = context.read<UserController>().user.address;
+            Navigator.pushNamed(context, '/checkout');
           },
           child: Container(
             height: size.height * 0.075,

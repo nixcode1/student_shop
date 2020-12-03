@@ -13,9 +13,9 @@ class Auth {
     try {
       UserCredential userCredential = await _authInstance
           .createUserWithEmailAndPassword(email: email, password: password);
-     
+
       _db.createUser(userCredential.user);
-      return null;
+      return "Signed In";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return ('The password provided is too weak.');
@@ -32,16 +32,20 @@ class Auth {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      return "Signed In";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return ('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         return ('Wrong password provided for that user.');
       }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<String> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
     print("google user details" + googleUser.toString());
@@ -57,10 +61,11 @@ class Auth {
     );
 
     // Create user in database
-    
 
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-    
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
     _db.createUser(userCredential.user);
+    return "Signed In";
   }
 }
