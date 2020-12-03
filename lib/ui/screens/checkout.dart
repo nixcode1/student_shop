@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/user_controller.dart';
@@ -158,56 +159,24 @@ class CheckoutBody extends StatelessWidget {
 
   Widget _enterAddressBtn(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return FlatButton(
-      padding: EdgeInsets.all(0),
-      onPressed: () async {
-        _showAddressBottomSheet(context);
-      },
-      child: Container(
-        height: size.height * 0.08,
-        margin: EdgeInsets.only(right: 20, bottom: 30, top: 30),
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Theme.of(context).accentColor),
-        ),
-        child: Center(
-          child: Text(
-            "Add an address",
-            style: TextStyle(
-                color: Colors.yellow,
-                fontSize: 16,
-                fontWeight: FontWeight.w900),
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 20),
+      child: ListTile(
+        onTap: () => _showAddressBottomSheet(context),
+        leading: Icon(Icons.add_circle),
+        title: Text("Add an Address"),
       ),
     );
   }
 
   Widget _enterNumberBtn(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return FlatButton(
-      padding: EdgeInsets.all(0),
-      onPressed: () async {
-        _showNumberBottomSheet(context);
-      },
-      child: Container(
-        height: size.height * 0.08,
-        margin: EdgeInsets.only(right: 20, bottom: 50, top: 30),
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Theme.of(context).accentColor),
-        ),
-        child: Center(
-          child: Text(
-            "Add a Phone Number",
-            style: TextStyle(
-                color: Colors.yellow,
-                fontSize: 16,
-                fontWeight: FontWeight.w900),
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20,),
+      child: ListTile(
+        onTap: () => _showNumberBottomSheet(context),
+        leading: Icon(Icons.add_circle),
+        title: Text("Add a Phone Number"),
       ),
     );
   }
@@ -266,13 +235,16 @@ class CheckoutBody extends StatelessWidget {
                   height: size.height * 0.025,
                 ),
                 Expanded(
-                  child: Text(
-                    content,
-                    softWrap: true,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      color: accentColor,
-                      fontSize: 14,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      content,
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                        color: accentColor,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
@@ -293,38 +265,126 @@ class CheckoutBody extends StatelessWidget {
 
   Widget _addressbottomSheet(BuildContext context) {
     String address = '';
-
+    Size size = MediaQuery.of(context).size;
     return Container(
+      padding: EdgeInsets.all(20),
       height: MediaQuery.of(context).size.height / 2,
       child: Column(
         children: [
-          Text("Enter an address"),
+          Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Text(
+                "Enter an Address",
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              )),
           TextField(
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              filled: true,
+              labelText: "Address",
+              labelStyle: TextStyle(color: Colors.black),
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+            ),
             onChanged: (String value) {
               address = value;
               print(address);
             },
           ),
-          RaisedButton(
-            onPressed: () {
-              context.read<UserController>().setAddress = address;
-              context.read<CartController>().cartAddress = address;
-              Navigator.pop(context);
-            },
-            child: Text("Save address"),
+          Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: FlatButton(
+              padding: EdgeInsets.all(0),
+              onPressed: () async {
+                // if(GetUtils.isPhoneNumber(number)) {
+                //   print('yes is number');
+                // } else {
+                //   print('not phone number');
+                // }
+                context.read<UserController>().setAddress = address;
+                context.read<CartController>().cartAddress = address;
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: size.height * 0.075,
+                width: size.width,
+                margin: EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[300],
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    "Save address",
+                    style: TextStyle(
+                        color: Colors.yellow,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900),
+                  ),
+                ),
+              ),
+            ),
           ),
-          context.watch<UserController>().user.address == null
+          context.watch<UserController>().user.phoneNo == null
               ? SizedBox.shrink()
-              : RaisedButton(
-                  onPressed: () {
-                    context.read<CartController>().cartAddress = address;
-                    Navigator.pop(context);
-                  },
-                  child: Text("Add for this order"),
+              : Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: () async {
+                      context.read<CartController>().phoneNo = null;
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: size.height * 0.075,
+                      width: size.width,
+                      margin: EdgeInsets.all(0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[300],
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Add address",
+                          style: TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
           RaisedButton(
             onPressed: () {
-              context.read<UserController>().setAddress = null;
+              context.read<CartController>().cartAddress = null;
             },
             child: Text("Clear"),
           )
@@ -335,39 +395,126 @@ class CheckoutBody extends StatelessWidget {
 
   Widget _numberBottomSheet(BuildContext context) {
     String number = '';
-
+    Size size = MediaQuery.of(context).size;
     return Container(
+      padding: EdgeInsets.all(20),
       height: MediaQuery.of(context).size.height / 2,
       child: Column(
         children: [
-          Text("Enter an number"),
+          Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Text(
+                "Enter a Mobile Number",
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              )),
           TextField(
             keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              filled: true,
+              labelText: "Phone Number",
+              labelStyle: TextStyle(color: Colors.black),
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Theme.of(context).accentColor)),
+            ),
             onChanged: (String value) {
               number = value;
               print(number);
             },
           ),
-          RaisedButton(
-            onPressed: () {
-              context.read<UserController>().setNumber = number;
-              context.read<CartController>().phoneNo = number;
-              Navigator.pop(context);
-            },
-            child: Text("Save address"),
+          Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: FlatButton(
+              padding: EdgeInsets.all(0),
+              onPressed: () async {
+                // if(GetUtils.isPhoneNumber(number)) {
+                //   print('yes is number');
+                // } else {
+                //   print('not phone number');
+                // }
+                context.read<UserController>().setNumber = number.trim();
+                context.read<CartController>().phoneNo = number.trim();
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: size.height * 0.075,
+                width: size.width,
+                margin: EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[300],
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    "Save number",
+                    style: TextStyle(
+                        color: Colors.yellow,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w900),
+                  ),
+                ),
+              ),
+            ),
           ),
           context.watch<UserController>().user.phoneNo == null
               ? SizedBox.shrink()
-              : RaisedButton(
-                  onPressed: () {
-                    context.read<CartController>().phoneNo = number;
-                    Navigator.pop(context);
-                  },
-                  child: Text("Add for this order"),
+              : Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: () async {
+                      context.read<CartController>().phoneNo = null;
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: size.height * 0.075,
+                      width: size.width,
+                      margin: EdgeInsets.all(0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[300],
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Add number",
+                          style: TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
           RaisedButton(
             onPressed: () {
-              context.read<UserController>().setAddress = null;
+              context.read<CartController>().phoneNo = null;
             },
             child: Text("Clear"),
           )
