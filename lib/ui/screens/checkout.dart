@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:location/location.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/user_controller.dart';
+import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/order.dart';
 import 'package:student_shop/models/user_model.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
+  @override
+  _CheckoutScreenState createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,15 +41,37 @@ class CheckoutScreen extends StatelessWidget {
   }
 }
 
-class CheckoutBody extends StatelessWidget {
+class CheckoutBody extends StatefulWidget {
+  @override
+  _CheckoutBodyState createState() => _CheckoutBodyState();
+}
+
+class _CheckoutBodyState extends State<CheckoutBody> {
+  Location location = new Location();
+
+  bool _serviceEnabled;
+
+  PermissionStatus _permissionGranted;
+
+  LocationData _locationData;
+
+  final _addressController = TextEditingController();
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final cart = context.watch<CartController>();
-    AppUser user = context.watch<UserController>().user;
     return Stack(
       children: [
         Container(
+          height: size.height,
           padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
           child: ListView(
             padding: EdgeInsets.only(bottom: size.height * 0.18),
@@ -115,13 +144,18 @@ class CheckoutBody extends StatelessWidget {
         FlatButton(
           padding: EdgeInsets.all(0),
           onPressed: () async {
-            // AppUser user  = await FirestoreDB().getUser();
-            // print(user.email);
-            // Order order = context.read<CartController>().order
-            // ..address = user.address
-            // ..user = user.id;
-            // await dbApi.addOrder(order);
-            // print(order.toJson());
+            FirestoreDB dbApi = FirestoreDB();
+            AppUser user = context.read<UserController>().user;
+            Order order = context.read<CartController>().order
+              ..address = user.address
+              ..user = user.id;
+            await dbApi.addOrder(order);
+            if (context.read<UserController>().updateUser) {
+              dbApi.updateUser(user.id, user);
+              print("user update called");
+              context.read<UserController>().updateUser = false;
+            }
+            print(order.toJson());
           },
           child: Container(
             height: size.height * 0.075,
@@ -158,7 +192,6 @@ class CheckoutBody extends StatelessWidget {
   }
 
   Widget _enterAddressBtn(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: ListTile(
@@ -170,9 +203,10 @@ class CheckoutBody extends StatelessWidget {
   }
 
   Widget _enterNumberBtn(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(top: 20,),
+      padding: const EdgeInsets.only(
+        top: 20,
+      ),
       child: ListTile(
         onTap: () => _showNumberBottomSheet(context),
         leading: Icon(Icons.add_circle),
@@ -264,12 +298,11 @@ class CheckoutBody extends StatelessWidget {
   }
 
   Widget _addressbottomSheet(BuildContext context) {
-    String address = '';
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(20),
       height: MediaQuery.of(context).size.height / 2,
-      child: Column(
+      child: ListView(
         children: [
           Padding(
               padding: const EdgeInsets.only(bottom: 30),
@@ -278,7 +311,7 @@ class CheckoutBody extends StatelessWidget {
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               )),
           TextField(
-            keyboardType: TextInputType.number,
+            controller: _addressController,
             decoration: InputDecoration(
               filled: true,
               labelText: "Address",
@@ -291,103 +324,66 @@ class CheckoutBody extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(color: Theme.of(context).accentColor)),
             ),
-            onChanged: (String value) {
-              address = value;
-              print(address);
-            },
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 40),
-            child: FlatButton(
-              padding: EdgeInsets.all(0),
-              onPressed: () async {
-                // if(GetUtils.isPhoneNumber(number)) {
-                //   print('yes is number');
-                // } else {
-                //   print('not phone number');
-                // }
-                context.read<UserController>().setAddress = address;
-                context.read<CartController>().cartAddress = address;
-                Navigator.pop(context);
-              },
-              child: Container(
-                height: size.height * 0.075,
-                width: size.width,
-                margin: EdgeInsets.all(0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                      colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[300],
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    "Save address",
-                    style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900),
-                  ),
-                ),
-              ),
-            ),
+          _blueButton(
+            title: "Save Address",
+            size: size,
+            onTap: () async {
+              context.read<UserController>().setAddress =
+                  _addressController.text;
+              context.read<CartController>().cartAddress =
+                  _addressController.text;
+              Navigator.pop(context);
+            },
           ),
           context.watch<UserController>().user.phoneNo == null
               ? SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () async {
-                      context.read<CartController>().phoneNo = null;
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: size.height * 0.075,
-                      width: size.width,
-                      margin: EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                            colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[300],
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Add address",
-                          style: TextStyle(
-                              color: Colors.yellow,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              : _blueButton(
+                  title: "Add Address",
+                  size: size,
+                  onTap: () {
+                    context.read<CartController>().phoneNo = null;
+                    Navigator.pop(context);
+                  }),
+          _blueButton(
+            title: "Get Address From Location",
+            size: size,
+            onTap: () async {
+              print("tapped");
+              _serviceEnabled = await location.serviceEnabled();
+              if (!_serviceEnabled) {
+                _serviceEnabled = await location.requestService();
+                if (!_serviceEnabled) {
+                  return;
+                }
+              }
+
+              _permissionGranted = await location.hasPermission();
+              if (_permissionGranted == PermissionStatus.denied) {
+                _permissionGranted = await location.requestPermission();
+                if (_permissionGranted != PermissionStatus.granted) {
+                  return;
+                }
+              }
+
+              _locationData = await location.getLocation();
+              print(_locationData);
+              final coordinates = new Coordinates(
+                  _locationData.latitude, _locationData.longitude);
+              var addresses = await Geocoder.local
+                  .findAddressesFromCoordinates(coordinates);
+              var first = addresses.first;
+              _addressController.text = first.addressLine;
+              print(_addressController.text);
+            },
+          ),
           RaisedButton(
             onPressed: () {
               context.read<CartController>().cartAddress = null;
+              _addressController.clear();
             },
             child: Text("Clear"),
-          )
+          ),
         ],
       ),
     );
@@ -426,91 +422,29 @@ class CheckoutBody extends StatelessWidget {
               print(number);
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 40),
-            child: FlatButton(
-              padding: EdgeInsets.all(0),
-              onPressed: () async {
-                // if(GetUtils.isPhoneNumber(number)) {
-                //   print('yes is number');
-                // } else {
-                //   print('not phone number');
-                // }
-                context.read<UserController>().setNumber = number.trim();
-                context.read<CartController>().phoneNo = number.trim();
-                Navigator.pop(context);
-              },
-              child: Container(
-                height: size.height * 0.075,
-                width: size.width,
-                margin: EdgeInsets.all(0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                      colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[300],
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    "Save number",
-                    style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900),
-                  ),
-                ),
-              ),
-            ),
+          _blueButton(
+            title: "Save Number",
+            size: size,
+            onTap: () {
+              // if(GetUtils.isPhoneNumber(number)) {
+              //   print('yes is number');
+              // } else {
+              //   print('not phone number');
+              // }
+              context.read<UserController>().setNumber = number.trim();
+              context.read<CartController>().phoneNo = number.trim();
+              Navigator.pop(context);
+            },
           ),
           context.watch<UserController>().user.phoneNo == null
               ? SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () async {
-                      context.read<CartController>().phoneNo = null;
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      height: size.height * 0.075,
-                      width: size.width,
-                      margin: EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                            colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[300],
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Add number",
-                          style: TextStyle(
-                              color: Colors.yellow,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900),
-                        ),
-                      ),
-                    ),
-                  ),
+              : _blueButton(
+                  title: "Add Number",
+                  size: size,
+                  onTap: () {
+                    context.read<CartController>().phoneNo = null;
+                    Navigator.pop(context);
+                  },
                 ),
           RaisedButton(
             onPressed: () {
@@ -542,6 +476,45 @@ class CheckoutBody extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(30),
+        ),
+      ),
+    );
+  }
+
+  Widget _blueButton({String title, Function onTap, Size size}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: FlatButton(
+        padding: EdgeInsets.all(0),
+        onPressed: onTap,
+        child: Container(
+          height: size.height * 0.075,
+          width: size.width,
+          margin: EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+                colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[300],
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                  color: Colors.yellow,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900),
+            ),
+          ),
         ),
       ),
     );

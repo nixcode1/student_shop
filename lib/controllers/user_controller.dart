@@ -4,6 +4,7 @@ import 'package:student_shop/models/user_model.dart';
 
 class UserController extends ChangeNotifier {
   AppUser _user = AppUser();
+  bool updateUser = false;
 
   UserController() {
     initUser();
@@ -14,21 +15,23 @@ class UserController extends ChangeNotifier {
   }
 
   AppUser get user => _user;
-  
+
   dynamic get printUser => _user.toJson();
 
   set setAddress(String address) {
     _user.address = address;
+    updateUser = true;
     print("address set");
     notifyListeners();
   }
 
   set setNumber(String number) {
     _user.phoneNo = number;
+    updateUser = true;
     notifyListeners();
   }
 
-  void clearData() {
+  void clearUser() {
     _user = AppUser();
     notifyListeners();
   }

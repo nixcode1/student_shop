@@ -122,7 +122,7 @@ class _MyHomepageState extends State<MyHomepage> {
             heroTag: null,
             onPressed: () {
               Auth().instance.signOut();
-              Provider.of<UserController>(context, listen: false).clearData();
+              Provider.of<UserController>(context, listen: false).clearUser();
             },
           )
         ],

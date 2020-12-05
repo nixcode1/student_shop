@@ -112,8 +112,18 @@ class CartBody extends StatelessWidget {
         FlatButton(
           padding: EdgeInsets.all(0),
           onPressed: () async {
-            context.read<CartController>().cartAddress = context.read<UserController>().user.address;
-            Navigator.pushNamed(context, '/checkout');
+            if (context.read<CartController>().count < 1) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text("Cart is empty!"),
+                backgroundColor: Colors.red,
+              ));
+            } else {
+              context.read<CartController>().cartAddress =
+                  context.read<UserController>().user.address;
+              context.read<CartController>().phoneNo =
+                  context.read<UserController>().user.phoneNo;
+              Navigator.pushNamed(context, '/checkout');
+            }
           },
           child: Container(
             height: size.height * 0.075,
