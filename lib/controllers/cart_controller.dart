@@ -57,15 +57,13 @@ class CartController extends ChangeNotifier {
   }
 
   set cartAddress(String address ){
-    order.address = address;
+    order.user.address = address;
     print("Controller cart address added");
     notifyListeners();
   }
 
   set phoneNo(String number) {
-    order.phoneNo = number;
+    order.user.phoneNo = number;
     notifyListeners();
   }
-
-  
 }

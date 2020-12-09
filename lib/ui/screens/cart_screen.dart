@@ -118,10 +118,8 @@ class CartBody extends StatelessWidget {
                 backgroundColor: Colors.red,
               ));
             } else {
-              context.read<CartController>().cartAddress =
-                  context.read<UserController>().user.address;
-              context.read<CartController>().phoneNo =
-                  context.read<UserController>().user.phoneNo;
+              context.read<CartController>().order.user =
+                  context.read<UserController>().user;
               Navigator.pushNamed(context, '/checkout');
             }
           },

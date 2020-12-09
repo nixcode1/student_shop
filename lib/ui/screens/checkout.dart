@@ -76,17 +76,17 @@ class _CheckoutBodyState extends State<CheckoutBody> {
           child: ListView(
             padding: EdgeInsets.only(bottom: size.height * 0.18),
             children: [
-              cart.order.address == null
+              cart.order.user.address == null
                   ? _enterAddressBtn(context)
                   : checkOutCard(context,
                       title: "Address",
-                      content: cart.order.address,
+                      content: cart.order.user.address,
                       func: () => _showAddressBottomSheet(context)),
-              cart.order.phoneNo == null
+              cart.order.user.phoneNo == null
                   ? _enterNumberBtn(context)
                   : checkOutCard(context,
                       title: "Mobile Number",
-                      content: cart.order.phoneNo,
+                      content: cart.order.user.phoneNo,
                       func: () => _showNumberBottomSheet(context))
             ],
           ),
@@ -147,8 +147,7 @@ class _CheckoutBodyState extends State<CheckoutBody> {
             FirestoreDB dbApi = FirestoreDB();
             AppUser user = context.read<UserController>().user;
             Order order = context.read<CartController>().order
-              ..address = user.address
-              ..user = user.id;
+              ..user = user;
             await dbApi.addOrder(order);
             if (context.read<UserController>().updateUser) {
               dbApi.updateUser(user.id, user);
@@ -336,13 +335,13 @@ class _CheckoutBodyState extends State<CheckoutBody> {
               Navigator.pop(context);
             },
           ),
-          context.watch<UserController>().user.phoneNo == null
+          context.watch<UserController>().user.address == null
               ? SizedBox.shrink()
               : _blueButton(
                   title: "Add Address",
                   size: size,
                   onTap: () {
-                    context.read<CartController>().phoneNo = null;
+                    context.read<CartController>().cartAddress = _addressController.text;
                     Navigator.pop(context);
                   }),
           _blueButton(
@@ -442,7 +441,7 @@ class _CheckoutBodyState extends State<CheckoutBody> {
                   title: "Add Number",
                   size: size,
                   onTap: () {
-                    context.read<CartController>().phoneNo = null;
+                    context.read<CartController>().phoneNo = number.trim();
                     Navigator.pop(context);
                   },
                 ),
