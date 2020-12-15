@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:623055229467:android:0283d508bce7ec79039ebe",
+        "mobilesdk_app_id": "1:623055229467:android:935a225539003a18039ebe",
         "android_client_info": {
-          "package_name": "com.example.student_shop"
+          "package_name": "com.nixapps.student_shop"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "623055229467-n4uprs32rutd1sn9b05i6pc5ukectm7g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nixapps.student_shop",
+            "certificate_hash": "f8b98f6eb2a2af1cbe8a9ffb5a3f067142892209"
+          }
+        },
         {
           "client_id": "623055229467-c7evltq0r9nbfhr4lovt11i0jontct4g.apps.googleusercontent.com",
           "client_type": 3
