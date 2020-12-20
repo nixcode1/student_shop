@@ -13,7 +13,6 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
             e == null ? null : CartItem.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     totalPrice: json['totalPrice'] as int,
-    date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
   )
     ..user = json['user'] == null
         ? null
@@ -26,5 +25,4 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'totalPrice': instance.totalPrice,
       'user': instance.user?.toJson(),
       'isCompleted': instance.isCompleted,
-      'date': instance.date?.toIso8601String(),
     };

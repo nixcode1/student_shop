@@ -12,14 +12,14 @@ part 'order.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Order {
-  Order({this.items, this.totalPrice, this.date});
+  Order({this.items, this.totalPrice});
 
   List<CartItem> items = [];
   int totalPrice = 0;
   AppUser user;
   bool isCompleted = false;
-  @TimestampConverter()
-  DateTime date;
+  // @TimestampConverter()
+  // DateTime date;
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrderToJson(this);

@@ -11,12 +11,13 @@ class FirestoreDB {
   Future<void> addOrder(Order order) {
 
     // Set timestamp;
-    order.date = DateTime.now();
+    Map modifiedOrder = order.toJson();
+    modifiedOrder['date'] = FieldValue.serverTimestamp();
 
     // Call the user's CollectionReference to add a new user
     _db.collection("orders")
-        .add(order.toJson())
-        .then((value) => print("\Order added"))
+        .add(modifiedOrder)
+        .then((value) => print("Order added"))
         .catchError((error) => print("Failed to add order: $error"));
   }
 
