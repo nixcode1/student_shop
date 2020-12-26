@@ -7,6 +7,7 @@ import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/user_model.dart';
 import 'package:student_shop/ui/auth/login_screen.dart';
 import 'package:student_shop/ui/screens/home_screen.dart';
+import 'package:student_shop/ui/test.dart';
 import 'package:student_shop/ui/widgets/cart_widget.dart';
 
 class Homepage extends StatelessWidget {
@@ -94,6 +95,9 @@ class _MyHomepageState extends State<MyHomepage> {
               title: Text('Item 2'),
               onTap: () {
                 //
+                setState(() {
+                  _body = Sliver();
+                });
                 Navigator.pop(context);
               },
             ),
@@ -113,9 +117,11 @@ class _MyHomepageState extends State<MyHomepage> {
               // ..phoneNo = '09345389456'
               // ..name = "Admin";
               // FirestoreDB().updateUser(userID, user);
-              dynamic user =
-                  Provider.of<UserController>(context, listen: false).printUser;
-              print(user);
+              // dynamic user =
+              //     Provider.of<UserController>(context, listen: false).printUser;
+              // print(user);
+              FirestoreDB().fecthOrder("80sYvXCMZqAUtYrHAUBB");
+              // FirestoreDB().fetchOrders();
             },
           ),
           FloatingActionButton(

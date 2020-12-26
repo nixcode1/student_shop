@@ -1,39 +1,77 @@
 // To parse this JSON data, do
 //
 //     final product = productFromJson(jsonString);
-import 'package:json_annotation/json_annotation.dart';
+
 import 'dart:convert';
 
-part 'product.g.dart';
+List<Product> productFromJson(String str) => List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
 
+String productToJson(List<Product> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-List<Product> productFromJson(String str) =>
-    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
-
-String productToJson(List<Product> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-@JsonSerializable()
 class Product {
-  Product({
-    this.id,
-    this.price,
-    this.name,
-    this.description,
-    this.category,
-    this.imageUrl,
-  });
-  String id;
-  int price;
-  String name;
-  String description;
-  String category;
-  String imageUrl;
+    Product({
+        this.price,
+        this.proprties,
+        this.imageUrl,
+        this.name,
+        this.description,
+        this.id,
+        this.category,
+        this.productClass,
+    });
 
-  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
+    int price;
+    Proprties proprties;
+    String imageUrl;
+    String name;
+    String description;
+    String id;
+    String category;
+    int productClass;
 
-  /// `toJson` is the convention for a class to declare support for serialization
-  /// to JSON. The implementation simply calls the private, generated
-  /// helper method `_$UserToJson`.
-  Map<String, dynamic> toJson() => _$ProductToJson(this);
+    factory Product.fromJson(Map<String, dynamic> json) => Product(
+        price: json["price"],
+        proprties: Proprties.fromJson(json["proprties"]),
+        imageUrl: json["imageUrl"],
+        name: json["name"],
+        description: json["description"],
+        id: json["id"],
+        category: json["category"],
+        productClass: json["class"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "price": price,
+        "proprties": proprties.toJson(),
+        "imageUrl": imageUrl,
+        "name": name,
+        "description": description,
+        "id": id,
+        "category": category,
+        "class": productClass,
+    };
+}
+
+class Proprties {
+    Proprties({
+        this.gpuClass,
+        this.cpuClass,
+        this.storage,
+    });
+
+    int gpuClass;
+    int cpuClass;
+    int storage;
+
+    factory Proprties.fromJson(Map<String, dynamic> json) => Proprties(
+        gpuClass: json["gpu_class"],
+        cpuClass: json["cpu_class"],
+        storage: json["storage"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "gpu_class": gpuClass,
+        "cpu_class": cpuClass,
+        "storage": storage,
+    };
 }
