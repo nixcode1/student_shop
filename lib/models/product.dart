@@ -3,75 +3,89 @@
 //     final product = productFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<Product> productFromJson(String str) => List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
+List<Product> productFromJson(String str) =>
+    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
 
-String productToJson(List<Product> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String productToJson(List<Product> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Product {
-    Product({
-        this.price,
-        this.proprties,
-        this.imageUrl,
-        this.name,
-        this.description,
-        this.id,
-        this.category,
-        this.productClass,
-    });
+  Product(
+      {this.price,
+      this.imageUrl,
+      this.name,
+      this.description,
+      this.id,
+      this.category,
+      this.properties,
+      this.createdAt,
+      this.rank});
 
-    int price;
-    Proprties proprties;
-    String imageUrl;
-    String name;
-    String description;
-    String id;
-    String category;
-    int productClass;
+  int price;
+  int rank;
+  String imageUrl;
+  String name;
+  String description;
+  String id;
+  String category;
+  Properties properties;
+  DateTime createdAt;
 
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
         price: json["price"],
-        proprties: Proprties.fromJson(json["proprties"]),
+        rank: json["rank"],
         imageUrl: json["imageUrl"],
         name: json["name"],
         description: json["description"],
         id: json["id"],
         category: json["category"],
-        productClass: json["class"],
-    );
+        createdAt: json['createdAt'].toDate(),
+        properties: Properties.fromJson(json["properties"]),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "price": price,
-        "proprties": proprties.toJson(),
         "imageUrl": imageUrl,
         "name": name,
         "description": description,
         "id": id,
         "category": category,
-        "class": productClass,
-    };
+        "properties": properties.toJson(),
+      };
 }
 
-class Proprties {
-    Proprties({
-        this.gpuClass,
-        this.cpuClass,
-        this.storage,
-    });
+class Properties {
+  Properties({
+    this.gpuClass,
+    this.cpuClass,
+    this.storage,
+  });
 
-    int gpuClass;
-    int cpuClass;
-    int storage;
+  int gpuClass;
+  int cpuClass;
+  String storage;
 
-    factory Proprties.fromJson(Map<String, dynamic> json) => Proprties(
+  bool compare(Properties object) {
+    if (object.gpuClass > gpuClass &&
+        object.cpuClass > cpuClass &&
+        object.storage == storage) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  factory Properties.fromJson(Map<String, dynamic> json) => Properties(
         gpuClass: json["gpu_class"],
         cpuClass: json["cpu_class"],
         storage: json["storage"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "gpu_class": gpuClass,
         "cpu_class": cpuClass,
         "storage": storage,
-    };
+      };
 }

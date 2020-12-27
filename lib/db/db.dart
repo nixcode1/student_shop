@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_shop/models/order.dart';
+import 'package:student_shop/models/product.dart';
 import 'package:student_shop/models/user_model.dart';
 
 // * This is my database class for firestore
@@ -29,24 +30,33 @@ class FirestoreDB {
 
   void fecthOrder(String id) {
     print("called!");
-    _db
-        .collection('products')
-        .doc(id)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        print('Document exists on the database');
-        print(json.encode(documentSnapshot.data()));
-      }
-    });
+    _db.collection('products').doc(id).get().then(
+      (DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          print('Document exists on the database');
+          var data = documentSnapshot.data();
+          data.remove('createdAt');
+          print(json.encode(data));
+        }
+      },
+    );
   }
 
   void fetchOrders() async {
-    List ls = [];
-    await getAllProducts().then((value) => value.docs.forEach((element) {
-          ls.add(element.data());
-        }));
-    print(ls);
+    print("called");
+    QuerySnapshot value =
+        await _db.collection("products").where("rank", isGreaterThan: 1).get();
+
+    List<Product> products = (value.docs.map((e) {
+      Map<String, dynamic> data = e.data();
+      return Product.fromJson(data);
+    })).toList();
+    Properties query = Properties(gpuClass: 1, cpuClass: 1, storage: "HDD");
+    List<Product> queryResults =
+        products.where((element) => query.compare(element.properties)).toList();
+    queryResults.forEach((element) {
+      print(element.toJson());
+    });
   }
 
   void createUser(User user) {

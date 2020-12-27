@@ -120,7 +120,7 @@ class _MyHomepageState extends State<MyHomepage> {
               // dynamic user =
               //     Provider.of<UserController>(context, listen: false).printUser;
               // print(user);
-              FirestoreDB().fecthOrder("80sYvXCMZqAUtYrHAUBB");
+              FirestoreDB().fetchOrders();
               // FirestoreDB().fetchOrders();
             },
           ),
