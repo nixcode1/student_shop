@@ -114,7 +114,7 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
     return MainButton(
       title: "Login",
       onTap: () async {
-        
+        FocusManager.instance.primaryFocus.unfocus();
         if (_formKey.currentState.validate()) {
           _showMyDialog();
           String message = await auth.signInWithEmail(

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/user_model.dart';
@@ -7,7 +8,9 @@ class UserController extends ChangeNotifier {
   bool updateUser = false;
 
   UserController() {
-    initUser();
+    if(FirebaseAuth.instance.currentUser != null) {
+      initUser();
+    }
   }
 
   initUser() async {
