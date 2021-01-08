@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/user_controller.dart';
+import 'package:student_shop/ui/auth/register_screen.dart';
 import 'package:student_shop/ui/widgets/button.dart';
 
 class LoginOrRegister extends StatefulWidget {
@@ -44,11 +45,26 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
               ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 80, left: 30),
-                child: Text("Welcome back",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Welcome",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Back",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -81,7 +97,7 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
                     SizedBox(
                       height: 20,
                     ),
-                    // registerButton(),
+                    registerButton(context),
                     loginButton(),
                     googleButton(),
                   ],
@@ -94,21 +110,22 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
     );
   }
 
-  // Widget registerButton() {
-  //   return RaisedButton(
-  //     onPressed: () async {
-  //       _showMyDialog();
-  //       String message = await auth.registerWithEmail(
-  //           _emailController.text, _passwordController.text);
-  //       Navigator.pop(context);
-  //       _scaffoldKey.currentState.showSnackBar(mySnackBar(message));
-  //       if (message == "Signed In") {
-  //         await Provider.of<UserController>(context, listen: false).initUser();
-  //       }
-  //     },
-  //     child: Text("Register"),
-  //   );
-  // }
+  Widget registerButton(BuildContext context) {
+    return RaisedButton(
+      onPressed: () async {
+        // _showMyDialog();
+        // String message = await auth.registerWithEmail(
+        //     _emailController.text, _passwordController.text);
+        // Navigator.pop(context);
+        // _scaffoldKey.currentState.showSnackBar(mySnackBar(message));
+        // if (message == "Signed In") {
+        //   await Provider.of<UserController>(context, listen: false).initUser();
+        // }
+        Navigator.pushNamed(context, '/register');
+      },
+      child: Text("Sign In"),
+    );
+  }
 
   Widget loginButton() {
     return MainButton(

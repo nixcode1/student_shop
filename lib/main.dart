@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:student_shop/ui/auth/register_screen.dart';
 import 'package:student_shop/ui/screens/cart_screen.dart';
 import 'package:student_shop/ui/screens/checkout.dart';
 import 'package:student_shop/ui/screens/homepage.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
           // When navigating to the "/second" route, build the SecondScreen widget.
           '/cart': (context) => CartScreen(),
           '/checkout': (context) => CheckoutScreen(),
+          '/register': (context) => RegisterScreen(),
         },
       ),
     );

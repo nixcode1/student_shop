@@ -9,12 +9,12 @@ class Auth {
 
   FirebaseAuth get instance => _authInstance;
 
-  Future<String> registerWithEmail(String email, String password) async {
+  Future<String> registerWithEmail(String email, String password, String name) async {
     try {
       UserCredential userCredential = await _authInstance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      _db.createUser(userCredential.user);
+      _db.createUser(userCredential.user, name: name);
       return "Signed In";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

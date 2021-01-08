@@ -59,10 +59,10 @@ class FirestoreDB {
     });
   }
 
-  void createUser(User user) {
+  void createUser(User user, {String name}) {
     AppUser dbUser = AppUser()
       ..id = user.uid
-      ..name = user.displayName
+      ..name = user.displayName ?? name
       ..email = user.email
       ..phoneNo = user.phoneNumber;
     _db.collection("users").doc(user.uid).set(dbUser.toJson());
