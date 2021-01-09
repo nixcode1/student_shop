@@ -41,7 +41,7 @@ class Auth {
       }
     } catch (e) {
       print(e);
-      return null;
+      return e;
     }
   }
 

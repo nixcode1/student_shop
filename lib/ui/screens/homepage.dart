@@ -10,23 +10,6 @@ import 'package:student_shop/ui/screens/home_screen.dart';
 import 'package:student_shop/ui/test.dart';
 import 'package:student_shop/ui/widgets/cart_widget.dart';
 
-class Homepage extends StatelessWidget {
-  final _auth = Auth();
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _auth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.data == null) {
-          return LoginOrRegister();
-        } else {
-          return MyHomepage();
-        }
-      },
-    );
-  }
-}
-
 class MyHomepage extends StatefulWidget {
   @override
   _MyHomepageState createState() => _MyHomepageState();
@@ -72,9 +55,7 @@ class _MyHomepageState extends State<MyHomepage> {
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
         // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
+        child: Column(
           children: <Widget>[
             DrawerHeader(
               child: Text('Drawer Header'),
@@ -83,7 +64,11 @@ class _MyHomepageState extends State<MyHomepage> {
               ),
             ),
             ListTile(
-              title: Text('Item 1'),
+              leading: Icon(
+                Icons.home,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text('Home'),
               onTap: () {
                 setState(() {
                   _body = HomeScreen();
@@ -92,7 +77,9 @@ class _MyHomepageState extends State<MyHomepage> {
               },
             ),
             ListTile(
-              title: Text('Item 2'),
+              leading: Icon(Icons.shopping_cart,
+                  color: Theme.of(context).accentColor),
+              title: Text('Orders'),
               onTap: () {
                 //
                 setState(() {
@@ -101,6 +88,16 @@ class _MyHomepageState extends State<MyHomepage> {
                 Navigator.pop(context);
               },
             ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.exit_to_app,
+                  color: Theme.of(context).accentColor),
+              title: Text('Log out'),
+              onTap: () {
+                Auth().instance.signOut();
+              Provider.of<UserController>(context, listen: false).clearUser();
+              },
+            )
           ],
         ),
       ),
@@ -124,13 +121,6 @@ class _MyHomepageState extends State<MyHomepage> {
               // FirestoreDB().fetchOrders();
             },
           ),
-          FloatingActionButton(
-            heroTag: null,
-            onPressed: () {
-              Auth().instance.signOut();
-              Provider.of<UserController>(context, listen: false).clearUser();
-            },
-          )
         ],
       ),
       body: _body,
