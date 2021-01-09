@@ -1,16 +1,18 @@
+import 'package:auth_buttons/auth_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
+import 'package:student_shop/controllers/auth_controller.dart';
 import 'package:student_shop/controllers/user_controller.dart';
 import 'package:student_shop/ui/auth/register_screen.dart';
 import 'package:student_shop/ui/widgets/button.dart';
 
-class LoginOrRegister extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _LoginOrRegisterState createState() => _LoginOrRegisterState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginOrRegisterState extends State<LoginOrRegister> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>(debugLabel: '_formKay');
   final _scaffoldKey = GlobalKey<ScaffoldState>(debugLabel: '_homeScreenkey');
   final auth = Auth();
@@ -29,8 +31,58 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
+          Center(
+            child: Container(
+              padding: EdgeInsets.only(left: 30, right: 30, top: 320),
+              decoration: BoxDecoration(
+                  // gradient: LinearGradient(
+                  //   colors: [Color(0xFF5d5778), Colors.white],
+                  //   begin: Alignment.topLeft,
+                  //   end: Alignment.bottomRight,
+                  // ),
+                  ),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value.length < 10) {
+                            return "Enter a valid email";
+                          }
+                        },
+                        decoration: getInputDecor("Email"),
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                        validator: (value) {
+                          if (value.length < 6) {
+                            return "Password must be at least 6 characters long";
+                          }
+                        },
+                        controller: _passwordController,
+                        decoration: getInputDecor('Password'),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      loginButton(),
+                      registerButton(context),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      googleButton(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
           ClipPath(
             clipper: MyClipper(),
             child: Container(
@@ -68,62 +120,15 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
               ),
             ),
           ),
-          Center(
-            child: Container(
-              padding: EdgeInsets.only(left: 30, right: 30, top: 340),
-              child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: [
-                    TextFormField(
-                      controller: _emailController,
-                      validator: (value) {
-                        if (value.length < 10) {
-                          return "Enter a valid email";
-                        }
-                      },
-                      decoration: getInputDecor("Email"),
-                    ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      validator: (value) {
-                        if (value.length < 6) {
-                          return "Password must be at least 6 characters long";
-                        }
-                      },
-                      controller: _passwordController,
-                      decoration: getInputDecor('Password'),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    registerButton(context),
-                    loginButton(),
-                    googleButton(),
-                  ],
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
   }
 
   Widget registerButton(BuildContext context) {
-    return RaisedButton(
-      onPressed: () async {
-        // _showMyDialog();
-        // String message = await auth.registerWithEmail(
-        //     _emailController.text, _passwordController.text);
-        // Navigator.pop(context);
-        // _scaffoldKey.currentState.showSnackBar(mySnackBar(message));
-        // if (message == "Signed In") {
-        //   await Provider.of<UserController>(context, listen: false).initUser();
-        // }
-        Navigator.pushNamed(context, '/register');
-      },
-      child: Text("Sign In"),
+    return MainButton(
+      title: "Sign up",
+      onTap: () => Provider.of<AuthController>(context, listen: false).signUp(),
     );
   }
 
@@ -148,14 +153,13 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
   }
 
   Widget googleButton() {
-    return RaisedButton(
+    return GoogleAuthButton(
       onPressed: () async {
         String message = await auth.signInWithGoogle();
         if (message == "Signed In") {
           await Provider.of<UserController>(context, listen: false).initUser();
         }
       },
-      child: Text("Google"),
     );
   }
 

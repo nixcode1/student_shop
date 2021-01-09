@@ -194,6 +194,10 @@ class _CheckoutBodyState extends State<CheckoutBody> {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: ListTile(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).accentColor),
+          borderRadius: BorderRadius.circular(20)
+        ),
         onTap: () => _showAddressBottomSheet(context),
         leading: Icon(Icons.add_circle),
         title: Text("Add an Address"),

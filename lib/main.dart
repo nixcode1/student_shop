@@ -8,6 +8,7 @@ import 'package:student_shop/ui/screens/cart_screen.dart';
 import 'package:student_shop/ui/screens/checkout.dart';
 import 'package:student_shop/ui/screens/homepage.dart';
 
+import 'controllers/auth_controller.dart';
 import 'controllers/user_controller.dart';
 
 void main() async {
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CartController()),
-        ChangeNotifierProvider(create: (_) => UserController(), lazy: false,)
+        ChangeNotifierProvider(create: (_) => UserController(), lazy: false,),
+        ChangeNotifierProvider(create: (_) => AuthController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

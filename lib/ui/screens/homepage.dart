@@ -5,7 +5,7 @@ import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/user_controller.dart';
 import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/user_model.dart';
-import 'package:student_shop/ui/auth/login_screen.dart';
+import 'package:student_shop/ui/auth/login_or_register.dart';
 import 'package:student_shop/ui/screens/home_screen.dart';
 import 'package:student_shop/ui/test.dart';
 import 'package:student_shop/ui/widgets/cart_widget.dart';

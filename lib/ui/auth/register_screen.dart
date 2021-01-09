@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
+import 'package:student_shop/controllers/auth_controller.dart';
 import 'package:student_shop/controllers/user_controller.dart';
 import 'package:student_shop/ui/widgets/button.dart';
 
@@ -55,8 +56,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xFF5d5778), Color(0xFF2d2942)],
-                  // begin: Alignment.topLeft,
-                  // end: Alignment.bottomRight,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
               child: Padding(
@@ -134,7 +135,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 30,
               ),
-              registerButton()
+              registerButton(),
+              signInBtn(context)
             ],
           ),
         ),
@@ -172,6 +174,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
         }
       },
+    );
+  }
+
+  Widget signInBtn(BuildContext context) {
+    return MainButton(
+      title: "Sign in",
+      onTap: () => Provider.of<AuthController>(context, listen: false).signIn(),
     );
   }
 
