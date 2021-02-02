@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_shop/auth/auth_api.dart';
+import 'package:student_shop/ui/screens/drawer_menu.dart';
 import 'package:student_shop/ui/screens/homepage.dart';
 
 import 'auth/login_or_register.dart';
@@ -14,7 +15,7 @@ class Home extends StatelessWidget {
         if (snapshot.data == null) {
           return LoginOrRegister();
         } else {
-          return MyHomepage();
+          return DrawerMenu();
         }
       },
     );

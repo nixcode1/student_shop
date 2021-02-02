@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
+import 'package:student_shop/controllers/drawerController.dart';
 import 'package:student_shop/controllers/user_controller.dart';
 import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/user_model.dart';
@@ -117,8 +119,8 @@ class _MyHomepageState extends State<MyHomepage> {
               // dynamic user =
               //     Provider.of<UserController>(context, listen: false).printUser;
               // print(user);
-              FirestoreDB().fetchOrders();
               // FirestoreDB().fetchOrders();
+              context.read<CustomDrawerController>().openDrawer(MediaQuery.of(context).size);
             },
           ),
         ],

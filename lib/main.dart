@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
+import 'package:student_shop/controllers/drawerController.dart';
 import 'package:student_shop/ui/auth/register_screen.dart';
 import 'package:student_shop/ui/home.dart';
 import 'package:student_shop/ui/screens/cart_screen.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => CartController()),
         ChangeNotifierProvider(create: (_) => UserController(), lazy: false,),
-        ChangeNotifierProvider(create: (_) => AuthController())
+        ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => CustomDrawerController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
