@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/drawerController.dart';
 import 'package:student_shop/controllers/user_controller.dart';
 import 'package:student_shop/ui/screens/homepage.dart';
+import 'package:student_shop/ui/screens/orders_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
   @override
   void initState() {
-    _id = 1;
+    _id = 0;
     // TODO: implement initState
     super.initState();
   }
@@ -81,6 +81,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                         Auth().instance.signOut();
                         Provider.of<UserController>(context, listen: false)
                             .clearUser();
+                        context.read<CustomDrawerController>().closeDrawer();
                       },
                     ),
                   ),
@@ -94,10 +95,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 context.watch<CustomDrawerController>().yOffset,
                 0)
               ..scale(context.watch<CustomDrawerController>().scaleFactor),
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 250),
             child: IndexedStack(
               index: _id,
-              children: <Widget>[MyHomepage()],
+              children: <Widget>[MyHomepage(), OrderScreen()],
             ),
           ),
         ],
@@ -118,7 +119,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
         });
       },
       child: AnimatedContainer(
-          duration: Duration(milliseconds: 400),
+          duration: Duration(milliseconds: 200),
           height: 50,
           width: MediaQuery.of(context).size.width * 0.45,
           margin: EdgeInsets.only(bottom: 10),
