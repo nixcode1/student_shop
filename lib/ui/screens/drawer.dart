@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/drawerController.dart';
 import 'package:student_shop/controllers/user_controller.dart';
+import 'package:student_shop/ui/screens/home_screen.dart';
 import 'package:student_shop/ui/screens/homepage.dart';
 import 'package:student_shop/ui/screens/orders_screen.dart';
 
@@ -97,7 +98,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             duration: Duration(milliseconds: 250),
             child: IndexedStack(
               index: _id,
-              children: <Widget>[MyHomepage(), OrderScreen()],
+              children: <Widget>[HomeScreen(), OrderScreen()],
             ),
           ),
         ],
