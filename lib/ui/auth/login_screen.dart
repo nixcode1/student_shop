@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/auth_controller.dart';
 import 'package:student_shop/controllers/user_controller.dart';
-import 'package:student_shop/ui/auth/register_screen.dart';
 import 'package:student_shop/ui/widgets/button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -51,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextFormField(
                         controller: _emailController,
+                        // ignore: missing_return
                         validator: (value) {
                           if (value.length < 10) {
                             return "Enter a valid email";
@@ -60,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 20),
                       TextFormField(
+                        // ignore: missing_return
                         validator: (value) {
                           if (value.length < 6) {
                             return "Password must be at least 6 characters long";

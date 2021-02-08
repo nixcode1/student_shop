@@ -1,13 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/drawerController.dart';
 import 'package:student_shop/controllers/user_controller.dart';
-import 'package:student_shop/db/db.dart';
-import 'package:student_shop/models/user_model.dart';
-import 'package:student_shop/ui/auth/login_or_register.dart';
 import 'package:student_shop/ui/screens/home_screen.dart';
 import 'package:student_shop/ui/test.dart';
 import 'package:student_shop/ui/widgets/cart_widget.dart';
@@ -92,12 +87,12 @@ class _MyHomepageState extends State<MyHomepage> {
             ),
             Spacer(),
             ListTile(
-              leading: Icon(Icons.exit_to_app,
-                  color: Theme.of(context).accentColor),
+              leading:
+                  Icon(Icons.exit_to_app, color: Theme.of(context).accentColor),
               title: Text('Log out'),
               onTap: () {
                 Auth().instance.signOut();
-              Provider.of<UserController>(context, listen: false).clearUser();
+                Provider.of<UserController>(context, listen: false).clearUser();
               },
             )
           ],
@@ -120,7 +115,9 @@ class _MyHomepageState extends State<MyHomepage> {
               //     Provider.of<UserController>(context, listen: false).printUser;
               // print(user);
               // FirestoreDB().fetchOrders();
-              context.read<CustomDrawerController>().openDrawer(MediaQuery.of(context).size);
+              context
+                  .read<CustomDrawerController>()
+                  .openDrawer(MediaQuery.of(context).size);
             },
           ),
         ],

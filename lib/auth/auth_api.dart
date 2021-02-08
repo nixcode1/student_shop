@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:student_shop/db/db.dart';
-import 'package:student_shop/models/user_model.dart';
 
 class Auth {
   final _authInstance = FirebaseAuth.instance;
@@ -9,7 +8,8 @@ class Auth {
 
   FirebaseAuth get instance => _authInstance;
 
-  Future<String> registerWithEmail(String email, String password, String name) async {
+  Future<String> registerWithEmail(
+      String email, String password, String name) async {
     try {
       UserCredential userCredential = await _authInstance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -24,8 +24,9 @@ class Auth {
       }
     } catch (e) {
       print(e);
-      return null;
+      throw 'An uncaught error';
     }
+    return "Error";
   }
 
   Future<String> signInWithEmail(String email, String password) async {
@@ -43,6 +44,7 @@ class Auth {
       print(e);
       return e;
     }
+    return 'error';
   }
 
   Future<String> signInWithGoogle() async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:student_shop/controllers/cart_controller.dart';
 
 class CartWidget extends StatelessWidget {
   @override

@@ -10,17 +10,18 @@ import 'package:student_shop/models/user_model.dart';
 class FirestoreDB {
   final _db = FirebaseFirestore.instance;
 
-  Future<void> addOrder(Order order) {
+  Future<void> addOrder(Order order) async {
     // Set timestamp;
     Map modifiedOrder = order.toJson();
     modifiedOrder['date'] = FieldValue.serverTimestamp();
 
     // Call the user's CollectionReference to add a new user
-    _db
-        .collection("orders")
-        .add(modifiedOrder)
-        .then((value) => print("Order added"))
-        .catchError((error) => print("Failed to add order: $error"));
+    try {
+      await _db.collection("orders").add(modifiedOrder);
+      print("Order added");
+    } catch (error) {
+      print("Failed to add order: $error");
+    }
   }
 
   Future<QuerySnapshot> getAllProducts() async {
@@ -72,7 +73,7 @@ class FirestoreDB {
     String id = FirebaseAuth.instance.currentUser.uid;
     DocumentSnapshot result = await _db.collection("users").doc(id).get();
     AppUser user = AppUser.fromJson(result.data());
-    print("User fectched!: ${user.email}");
+    print("User fetched!: ${user.email}");
     return user;
   }
 

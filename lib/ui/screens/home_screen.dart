@@ -5,13 +5,14 @@ import 'package:student_shop/controllers/drawerController.dart';
 import 'package:student_shop/db/db.dart';
 import 'package:student_shop/models/product.dart';
 import 'package:student_shop/ui/widgets/cart_widget.dart';
+import 'package:student_shop/ui/widgets/home_item_card.dart';
 
-import '../widgets/home_item_card.dart';
 import '../widgets/home_new_item.dart';
 
 class HomeScreen extends StatelessWidget {
-  TextStyle headingStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
-  FirestoreDB _db = FirestoreDB();
+  final TextStyle headingStyle =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+  final FirestoreDB _db = FirestoreDB();
 
   final List<String> list = [
     "All",
@@ -89,6 +90,17 @@ class HomeScreen extends StatelessWidget {
               ),
             )
             .toList());
+    // return StaggeredGridView.countBuilder(
+    //   physics: NeverScrollableScrollPhysics(),
+    //   crossAxisCount: 3,
+    //   itemCount: products.length,
+    //   itemBuilder: (BuildContext context, int index) =>
+    //       ItemCard(product: products[index]),
+    //   staggeredTileBuilder: (int index) =>
+    //       new StaggeredTile.count(2, index.isEven ? 2 : 1),
+    //   mainAxisSpacing: 4.0,
+    //   crossAxisSpacing: 4.0,
+    // );
   }
 
   @override

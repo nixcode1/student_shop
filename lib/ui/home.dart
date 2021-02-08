@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/ui/screens/drawer.dart';
-import 'package:student_shop/ui/screens/homepage.dart';
 
 import 'auth/login_or_register.dart';
 

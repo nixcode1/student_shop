@@ -3,7 +3,6 @@ import 'package:student_shop/models/cart_item.dart';
 import 'package:student_shop/models/order.dart';
 
 class CartController extends ChangeNotifier {
-  int _count;
   Order order = new Order()..items = [];
 
   int get count => order.items.length;
@@ -56,7 +55,7 @@ class CartController extends ChangeNotifier {
     notifyListeners();
   }
 
-  set cartAddress(String address ){
+  set cartAddress(String address) {
     order.user.address = address;
     print("Controller cart address added");
     notifyListeners();

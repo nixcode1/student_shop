@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/cart_controller.dart';
 import 'package:student_shop/controllers/user_controller.dart';
 import 'package:student_shop/db/db.dart';
-import 'package:student_shop/models/order.dart';
-import 'package:student_shop/models/user_model.dart';
 
 import '../widgets/cart_list_widget.dart';
 
@@ -38,7 +35,7 @@ class CartScreen extends StatelessWidget {
 }
 
 class CartBody extends StatelessWidget {
-  FirestoreDB dbApi = FirestoreDB();
+  final FirestoreDB dbApi = FirestoreDB();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

@@ -107,6 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (value.length < 6) {
                     return "That's quite a short name";
                   }
+                  return '';
                 },
                 decoration: getInputDecor("Name"),
               ),
@@ -118,6 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (value.length < 10) {
                     return "Enter a valid email";
                   }
+                  return '';
                 },
                 decoration: getInputDecor("Email"),
               ),
@@ -128,6 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (value.length < 6) {
                     return "Password must be at least 6 characters long";
                   }
+                  return '';
                 },
                 controller: _passwordController,
                 decoration: getInputDecor('Password'),
@@ -146,7 +149,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   InputDecoration getInputDecor(String text) {
     InputDecoration _inputDecoration = InputDecoration(
-      
       labelText: text,
       labelStyle: TextStyle(color: Colors.white),
       focusedBorder: OutlineInputBorder(
@@ -164,8 +166,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         FocusManager.instance.primaryFocus.unfocus();
         if (_formKey.currentState.validate()) {
           _showMyDialog();
-          String message = await auth.registerWithEmail(
-              _emailController.text, _passwordController.text, _nameController.text);
+          String message = await auth.registerWithEmail(_emailController.text,
+              _passwordController.text, _nameController.text);
           Navigator.pop(context);
           _scaffoldKey.currentState.showSnackBar(mySnackBar(message));
           if (message == "Signed In") {

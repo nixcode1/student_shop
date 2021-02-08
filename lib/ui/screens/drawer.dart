@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:student_shop/auth/auth_api.dart';
 import 'package:student_shop/controllers/drawerController.dart';
 import 'package:student_shop/controllers/user_controller.dart';
+import 'package:student_shop/ui/screens/chat-screen.dart';
 import 'package:student_shop/ui/screens/home_screen.dart';
-import 'package:student_shop/ui/screens/homepage.dart';
 import 'package:student_shop/ui/screens/orders_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
@@ -66,7 +66,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 SizedBox(height: 50),
                 _drawerMenuItem(id: 0, title: "Home", icon: Icons.home),
                 _drawerMenuItem(id: 1, title: "Orders", icon: Icons.person),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+                _drawerMenuItem(
+                    id: 2, title: "Chat", icon: Icons.message_outlined),
+                _drawerMenuItem(
+                    id: 3, title: "Wish List", icon: Icons.star_outline),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.3),
                 GestureDetector(
                   onTap: () => {},
                   child: Padding(
@@ -96,9 +100,18 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 0)
               ..scale(context.watch<CustomDrawerController>().scaleFactor),
             duration: Duration(milliseconds: 250),
-            child: IndexedStack(
-              index: _id,
-              children: <Widget>[HomeScreen(), OrderScreen()],
+            child: ClipRRect(
+              borderRadius: context.watch<CustomDrawerController>().isDrawerOpen
+                  ? BorderRadius.circular(20)
+                  : BorderRadius.circular(0),
+              child: IndexedStack(
+                index: _id,
+                children: <Widget>[
+                  HomeScreen(),
+                  OrderScreen(),
+                  ChatScreen(),
+                ],
+              ),
             ),
           ),
         ],
