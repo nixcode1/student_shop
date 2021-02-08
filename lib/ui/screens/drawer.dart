@@ -90,36 +90,35 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ],
             ),
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              if (context.read<CustomDrawerController>().isDrawerOpen) {
-                context.read<CustomDrawerController>().closeDrawer();
-              }
-            },
-            onHorizontalDragStart: (_) {
-              if (_.localPosition.dx > size.width / 2) {
-                print("right swipe");
-              } else {
-                print("left swipe");
-                context.read<CustomDrawerController>().openDrawer(size);
-              }
-              print(_.localPosition);
-            },
-            child: IgnorePointer(
-              ignoring: context.read<CustomDrawerController>().isDrawerOpen,
-              child: AnimatedContainer(
-                transform: Matrix4.translationValues(
-                    context.watch<CustomDrawerController>().xOffset,
-                    context.watch<CustomDrawerController>().yOffset,
-                    0)
-                  ..scale(context.watch<CustomDrawerController>().scaleFactor),
-                duration: Duration(milliseconds: 600),
-                child: ClipRRect(
-                  borderRadius:
-                      context.watch<CustomDrawerController>().isDrawerOpen
-                          ? BorderRadius.circular(20)
-                          : BorderRadius.circular(0),
+          AnimatedContainer(
+            transform: Matrix4.translationValues(
+                context.watch<CustomDrawerController>().xOffset,
+                context.watch<CustomDrawerController>().yOffset,
+                0)
+              ..scale(context.watch<CustomDrawerController>().scaleFactor),
+            duration: Duration(milliseconds: 600),
+            child: ClipRRect(
+              borderRadius: context.watch<CustomDrawerController>().isDrawerOpen
+                  ? BorderRadius.circular(20)
+                  : BorderRadius.circular(0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  if (context.read<CustomDrawerController>().isDrawerOpen) {
+                    context.read<CustomDrawerController>().closeDrawer();
+                  }
+                },
+                onHorizontalDragStart: (_) {
+                  if (_.localPosition.dx > size.width / 2) {
+                    print("right swipe");
+                  } else {
+                    print("left swipe");
+                    context.read<CustomDrawerController>().openDrawer(size);
+                  }
+                  print(_.localPosition);
+                },
+                child: IgnorePointer(
+                  ignoring: context.read<CustomDrawerController>().isDrawerOpen,
                   child: IndexedStack(
                     index: _id,
                     children: <Widget>[
