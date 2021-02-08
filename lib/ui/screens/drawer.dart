@@ -23,13 +23,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _menu());
-  }
-
-  Widget _menu() {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+        body: Container(
+      height: size.height,
+      width: size.width,
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [Theme.of(context).accentColor, Colors.purple[100]])),
@@ -39,7 +37,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 70),
+                SizedBox(height: size.height * 0.1),
                 // Padding(
                 //   padding: EdgeInsets.only(left: 70),
                 //   child: Column(
@@ -63,14 +61,13 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 //     ],
                 //   ),
                 // ),
-                SizedBox(height: 50),
                 _drawerMenuItem(id: 0, title: "Home", icon: Icons.home),
                 _drawerMenuItem(id: 1, title: "Orders", icon: Icons.person),
                 _drawerMenuItem(
                     id: 2, title: "Chat", icon: Icons.message_outlined),
                 _drawerMenuItem(
                     id: 3, title: "Wish List", icon: Icons.star_outline),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+                SizedBox(height: size.height * 0.3),
                 GestureDetector(
                   onTap: () => {},
                   child: Padding(
@@ -93,30 +90,52 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ],
             ),
           ),
-          AnimatedContainer(
-            transform: Matrix4.translationValues(
-                context.watch<CustomDrawerController>().xOffset,
-                context.watch<CustomDrawerController>().yOffset,
-                0)
-              ..scale(context.watch<CustomDrawerController>().scaleFactor),
-            duration: Duration(milliseconds: 600),
-            child: ClipRRect(
-              borderRadius: context.watch<CustomDrawerController>().isDrawerOpen
-                  ? BorderRadius.circular(20)
-                  : BorderRadius.circular(0),
-              child: IndexedStack(
-                index: _id,
-                children: <Widget>[
-                  HomeScreen(),
-                  OrderScreen(),
-                  ChatScreen(),
-                ],
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (context.read<CustomDrawerController>().isDrawerOpen) {
+                context.read<CustomDrawerController>().closeDrawer();
+              }
+            },
+            onHorizontalDragStart: (_) {
+              if (_.localPosition.dx > size.width / 2) {
+                print("right swipe");
+              } else {
+                print("left swipe");
+                context.read<CustomDrawerController>().openDrawer(size);
+              }
+              print(_.localPosition);
+            },
+            child: IgnorePointer(
+              ignoring: context.read<CustomDrawerController>().isDrawerOpen,
+              child: AnimatedContainer(
+                transform: Matrix4.translationValues(
+                    context.watch<CustomDrawerController>().xOffset,
+                    context.watch<CustomDrawerController>().yOffset,
+                    0)
+                  ..scale(context.watch<CustomDrawerController>().scaleFactor),
+                duration: Duration(milliseconds: 600),
+                child: ClipRRect(
+                  borderRadius:
+                      context.watch<CustomDrawerController>().isDrawerOpen
+                          ? BorderRadius.circular(20)
+                          : BorderRadius.circular(0),
+                  child: IndexedStack(
+                    index: _id,
+                    children: <Widget>[
+                      HomeScreen(),
+                      OrderScreen(),
+                      ChatScreen(),
+                      ChatScreen()
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
         ],
       ),
-    );
+    ));
   }
 
   /// Defines the drawer menu items(Drawer Menu)
