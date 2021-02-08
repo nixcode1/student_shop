@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("TechPlug", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Store", style: TextStyle(fontWeight: FontWeight.bold)),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
         backgroundColor: Theme.of(context).primaryColor,

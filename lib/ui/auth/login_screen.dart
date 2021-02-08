@@ -156,6 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget googleButton() {
     return GoogleAuthButton(
       onPressed: () async {
+        _showMyDialog();
         String message = await auth.signInWithGoogle();
         if (message == "Signed In") {
           await Provider.of<UserController>(context, listen: false).initUser();

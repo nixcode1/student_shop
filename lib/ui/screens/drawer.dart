@@ -99,7 +99,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 context.watch<CustomDrawerController>().yOffset,
                 0)
               ..scale(context.watch<CustomDrawerController>().scaleFactor),
-            duration: Duration(milliseconds: 250),
+            duration: Duration(milliseconds: 600),
             child: ClipRRect(
               borderRadius: context.watch<CustomDrawerController>().isDrawerOpen
                   ? BorderRadius.circular(20)
@@ -132,7 +132,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
         });
       },
       child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 300),
           height: 50,
           width: MediaQuery.of(context).size.width * 0.45,
           margin: EdgeInsets.only(bottom: 10),

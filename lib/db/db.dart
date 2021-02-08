@@ -60,13 +60,21 @@ class FirestoreDB {
     });
   }
 
-  void createUser(User user, {String name}) {
-    AppUser dbUser = AppUser()
-      ..id = user.uid
-      ..name = user.displayName ?? name
-      ..email = user.email
-      ..phoneNo = user.phoneNumber;
-    _db.collection("users").doc(user.uid).set(dbUser.toJson());
+  void createUser(User user, {String name}) async {
+    print(user.uid);
+    DocumentSnapshot doc = await _db.collection('users').doc(user.uid).get();
+    if (doc.exists) {
+      print(doc.data());
+      return;
+    } else {
+      print("New User created!");
+      AppUser dbUser = AppUser()
+        ..id = user.uid
+        ..name = user.displayName ?? name
+        ..email = user.email
+        ..phoneNo = user.phoneNumber;
+      _db.collection("users").doc(user.uid).set(dbUser.toJson());
+    }
   }
 
   Future<AppUser> getUser() async {
