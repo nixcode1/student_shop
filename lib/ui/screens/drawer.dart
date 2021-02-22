@@ -121,7 +121,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   ignoring: context.read<CustomDrawerController>().isDrawerOpen,
                   child: IndexedStack(
                     index: _id,
-                    children: <Widget>[
+                    children: [
                       HomeScreen(),
                       OrderScreen(),
                       ChatScreen(),

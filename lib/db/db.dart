@@ -77,6 +77,25 @@ class FirestoreDB {
     }
   }
 
+  void addMessage(var message, String userID) {
+    _db
+        .collection("messages")
+        .doc(userID)
+        .collection("chats")
+        .add(message)
+        .then(
+          (value) => print(value.id),
+        );
+  }
+
+  Stream<QuerySnapshot> getMessage(String userID) {
+    return _db
+        .collection("messages")
+        .doc(userID)
+        .collection("chats")
+        .snapshots();
+  }
+
   Future<AppUser> getUser() async {
     String id = FirebaseAuth.instance.currentUser.uid;
     DocumentSnapshot result = await _db.collection("users").doc(id).get();
